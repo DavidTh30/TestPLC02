@@ -40,6 +40,11 @@ type
     HMILabel5: THMILabel;
     ImageList1: TImageList;
     ISOTCPDriver1: TISOTCPDriver;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
     ListChartSource1: TListChartSource;
     ListChartSource2: TListChartSource;
     ListChartSource3: TListChartSource;
@@ -52,6 +57,11 @@ type
     PageControl1: TPageControl;
     PopupMenu1: TPopupMenu;
     PopupMenu2: TPopupMenu;
+    Shape1: TShape;
+    Shape2: TShape;
+    Shape3: TShape;
+    Shape4: TShape;
+    Shape5: TShape;
     StatusBar1: TStatusBar;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -415,17 +425,17 @@ begin
   Ra:= DB1_DBD72.Value;
   //Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
-  if ListChartSource4.Count < MaxRecordTime then ListChartSource2.Add(ListChartSource2.Count,Ra,Txt,clOlive); //V_DC  DB1_DBD72
+  if ListChartSource4.Count < MaxRecordTime then ListChartSource2.Add(ListChartSource2.Count,Ra,Txt,clMaroon); //V_DC  DB1_DBD72
 
   Ra:= DB1_DBD76.Value;
   //Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
-  if ListChartSource5.Count < MaxRecordTime then ListChartSource3.Add(ListChartSource3.Count,Ra,Txt,clRed);   //LineSpeed  DB1_DBD76
+  if ListChartSource5.Count < MaxRecordTime then ListChartSource3.Add(ListChartSource3.Count,Ra,Txt,clFuchsia);   //LineSpeed  DB1_DBD76
 
   Ra:= DB1_DBD252.Value;
   //Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
-  if ListChartSource5.Count < MaxRecordTime then ListChartSource4.Add(ListChartSource4.Count,Ra,Txt,clRed);   //Power_Out  DB1_DBD252
+  if ListChartSource5.Count < MaxRecordTime then ListChartSource4.Add(ListChartSource4.Count,Ra,Txt,clGreen);   //Power_Out  DB1_DBD252
 
   Ra:= DB1_DBD258.Value;
   //Ra:= Int(Random(1*1000));
