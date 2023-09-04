@@ -1,0 +1,516 @@
+object Form1: TForm1
+  Left = -1243
+  Height = 572
+  Top = -474
+  Width = 829
+  Caption = 'PLC:192.168.200.2  Port:102'
+  ClientHeight = 572
+  ClientWidth = 829
+  OnCreate = FormCreate
+  OnMouseWheel = FormMouseWheel
+  Position = poWorkAreaCenter
+  LCLVersion = '2.2.2.0'
+  object PageControl1: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = ToolBar1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = StatusBar1
+    Left = 0
+    Height = 523
+    Top = 26
+    Width = 829
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Actual'
+      ClientHeight = 495
+      ClientWidth = 821
+      object Button1: TButton
+        Left = 24
+        Height = 29
+        Top = 5
+        Width = 151
+        BorderSpacing.Left = 22
+        BorderSpacing.Top = 3
+        Caption = 'Connect'
+        OnClick = Button1Click
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 24
+        Height = 29
+        Top = 40
+        Width = 151
+        Caption = 'Disconnect'
+        OnClick = Button2Click
+        TabOrder = 1
+      end
+      object HMILabel1: THMILabel
+        Left = 100
+        Height = 25
+        Hint = 'DB1_DBD68'
+        Top = 112
+        Width = 98
+        AutoSize = True
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD68
+        Prefix = 'I_DC:  '
+        Sufix = '  A'
+        FormatDateTimeOptions = []
+      end
+      object HMILabel2: THMILabel
+        Left = 100
+        Height = 25
+        Hint = 'DB1_DBD72'
+        Top = 144
+        Width = 105
+        AutoSize = True
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD72
+        Prefix = 'V_DC:  '
+        Sufix = '  V'
+        FormatDateTimeOptions = []
+      end
+      object HMILabel3: THMILabel
+        Left = 104
+        Height = 25
+        Hint = 'DB1_DBD76'
+        Top = 176
+        Width = 111
+        AutoSize = True
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD76
+        Prefix = 'V_Out:  '
+        Sufix = '  V'
+        FormatDateTimeOptions = []
+      end
+      object HMILabel4: THMILabel
+        Left = 100
+        Height = 25
+        Hint = 'DB1_DBD252'
+        Top = 208
+        Width = 190
+        AutoSize = True
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD252
+        Prefix = 'LineSpeed:  '
+        Sufix = '  m/min'
+        FormatDateTimeOptions = []
+      end
+      object HMILabel5: THMILabel
+        Left = 100
+        Height = 25
+        Hint = 'DB1_DBD258'
+        Top = 232
+        Width = 158
+        AutoSize = True
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD258
+        Prefix = 'Power_Out:  '
+        Sufix = '  W'
+        FormatDateTimeOptions = []
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Chart'
+      ClientHeight = 495
+      ClientWidth = 821
+      object Chart1: TChart
+        AnchorSideLeft.Control = TabSheet2
+        AnchorSideTop.Control = TabSheet2
+        AnchorSideRight.Control = TabSheet2
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 0
+        Height = 495
+        Top = 0
+        Width = 821
+        AxisList = <        
+          item
+            Marks.LabelBrush.Style = bsClear
+            Minors = <>
+            Title.LabelFont.Orientation = 900
+            Title.LabelBrush.Style = bsClear
+          end        
+          item
+            Grid.Visible = False
+            Alignment = calBottom
+            Marks.LabelFont.Orientation = 900
+            Marks.Format = '%2:s'
+            Marks.LabelBrush.Style = bsClear
+            Marks.OverlapPolicy = opHideNeighbour
+            Marks.Source = ListChartSource1
+            Marks.Style = smsLabel
+            Minors = <>
+            Range.Max = 60
+            Range.UseMax = True
+            Range.UseMin = True
+            Title.Caption = 'Time Date'
+            Title.LabelBrush.Style = bsClear
+          end>
+        Extent.UseYMax = True
+        Extent.UseYMin = True
+        Extent.YMax = 100
+        Foot.Brush.Color = clBtnFace
+        Foot.Font.Color = clBlue
+        Foot.Frame.Visible = True
+        Foot.Shape = clsUserDefined
+        Title.Brush.Color = clBtnFace
+        Title.Font.Color = clBlue
+        Title.Text.Strings = (
+          'TAChart'
+        )
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        PopupMenu = PopupMenu1
+        OnClick = Chart1Click
+        OnDragOver = Chart1DragOver
+        OnMouseDown = Chart1MouseDown
+        OnMouseEnter = Chart1MouseEnter
+        OnMouseLeave = Chart1MouseLeave
+        object Chart1LineSeries1: TLineSeries
+          Title = 'time_qqq'
+          AxisIndexX = 1
+          AxisIndexY = 0
+          LinePen.Color = clBlue
+          LinePen.Mode = pmMask
+          LinePen.Width = 2
+          Source = ListChartSource1
+        end
+        object Chart1LineSeries2: TLineSeries
+          AxisIndexX = 1
+          LinePen.Color = 4210816
+          Source = ListChartSource2
+        end
+        object Chart1LineSeries3: TLineSeries
+          AxisIndexX = 1
+          LinePen.Color = clFuchsia
+          Source = ListChartSource3
+        end
+        object Chart1LineSeries4: TLineSeries
+          AxisIndexX = 1
+          AxisIndexY = 0
+          LinePen.Color = clGreen
+          Source = ListChartSource4
+        end
+        object Chart1LineSeries5: TLineSeries
+          AxisIndexX = 1
+          AxisIndexY = 0
+          LinePen.Color = clRed
+          Source = ListChartSource5
+        end
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Debug'
+      ClientHeight = 495
+      ClientWidth = 821
+      object Memo1: TMemo
+        AnchorSideLeft.Control = TabSheet3
+        AnchorSideRight.Control = TabSheet3
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = TabSheet3
+        AnchorSideBottom.Side = asrBottom
+        Left = 0
+        Height = 231
+        Top = 264
+        Width = 821
+        Anchors = [akLeft, akRight, akBottom]
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 549
+    Width = 829
+    Panels = <>
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 26
+    Top = 0
+    Width = 829
+    Caption = 'ToolBar1'
+    Images = ImageList1
+    ShowCaptions = True
+    TabOrder = 2
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 2
+      Caption = 'File'
+      DropdownMenu = PopupMenu2
+    end
+  end
+  object TCP_UDPPort1: TTCP_UDPPort
+    Host = '10.10.10.40'
+    ExclusiveDevice = False
+    EnableAutoReconnect = False
+    Left = 40
+    Top = 48
+  end
+  object ISOTCPDriver1: TISOTCPDriver
+    CommunicationPort = TCP_UDPPort1
+    ForcePDUSize = pdu240
+    ConnectionWay = ISOTCP
+    PLCSlot = 2
+    ReadOnly = False
+    Left = 80
+    Top = 48
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 248
+    Top = 56
+  end
+  object ListChartSource1: TListChartSource
+    Left = 616
+    Top = 16
+  end
+  object ListChartSource4: TListChartSource
+    Left = 672
+    Top = 16
+  end
+  object ListChartSource5: TListChartSource
+    Left = 728
+    Top = 16
+  end
+  object ChartAxisTransformations1: TChartAxisTransformations
+    Left = 560
+    Top = 16
+    object ChartAxisTransformations1LinearAxisTransform1: TLinearAxisTransform
+      Offset = 2
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Images = ImageList1
+    ImagesWidth = 10
+    Left = 392
+    Top = 48
+    object MenuItem1: TMenuItem
+      Caption = 'ZoomOut'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Refresh'
+      OnClick = MenuItem2Click
+    end
+  end
+  object Timer2: TTimer
+    Interval = 100
+    OnTimer = Timer2Timer
+    Left = 288
+    Top = 56
+  end
+  object DB1_68to76: TPLCBlock
+    TagGUID = '{D989AC53-6B59-4F5E-9E1A-897A0EFE43BA}'
+    PLCRack = 0
+    PLCSlot = 2
+    PLCStation = 2
+    MemFile_DB = 1
+    MemAddress = 68
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 500
+    LongAddress = ''
+    Size = 3
+    TagType = pttFloat
+    SwapBytes = True
+    SwapWords = True
+    Top = 48
+  end
+  object DB1_DBD68: TPLCBlockElement
+    TagGUID = '{BB773919-44F9-4739-B0A3-BA9775F063FF}'
+    PLCBlock = DB1_68to76
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object DB1_DBD72: TPLCBlockElement
+    TagGUID = '{B9FF7208-6DD9-4551-8F70-CFC60529A3A1}'
+    PLCBlock = DB1_68to76
+    Index = 1
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object DB1_DBD76: TPLCBlockElement
+    TagGUID = '{EAB4F379-28F6-43CC-845E-B982FAB4210F}'
+    PLCBlock = DB1_68to76
+    Index = 2
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object TPLCBlock
+    TagGUID = '{CF81CD15-6EC6-46CD-8463-A7118D041C0B}'
+    PLCRack = 0
+    PLCSlot = 2
+    PLCStation = 2
+    MemFile_DB = 0
+    MemAddress = 0
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    LongAddress = ''
+    Size = 1
+    Top = 48
+  end
+  object DB1_252: TPLCBlock
+    TagGUID = '{4324B880-CCEF-4A10-AF19-96381A9708E2}'
+    PLCRack = 0
+    PLCSlot = 2
+    PLCStation = 2
+    MemFile_DB = 1
+    MemAddress = 252
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 500
+    LongAddress = ''
+    Size = 1
+    TagType = pttFloat
+    SwapBytes = True
+    SwapWords = True
+    Top = 48
+  end
+  object DB1_DBD252: TPLCBlockElement
+    TagGUID = '{507E6CC4-C3E6-4FE3-964C-B0986A068171}'
+    PLCBlock = DB1_252
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object DB1_258: TPLCBlock
+    TagGUID = '{874E154C-FA2D-4B6B-B063-5CF7B59DEB07}'
+    PLCRack = 0
+    PLCSlot = 2
+    PLCStation = 2
+    MemFile_DB = 1
+    MemAddress = 258
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 500
+    LongAddress = ''
+    Size = 1
+    TagType = pttFloat
+    SwapBytes = True
+    SwapWords = True
+    Top = 48
+  end
+  object DB1_DBD258: TPLCBlockElement
+    TagGUID = '{216823AF-650A-477F-B28D-A2DF4B04DC8C}'
+    PLCBlock = DB1_258
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object ListChartSource2: TListChartSource
+    Left = 616
+    Top = 64
+  end
+  object ListChartSource3: TListChartSource
+    Left = 688
+    Top = 72
+  end
+  object ImageList1: TImageList
+    Left = 154
+    Top = 65
+    Bitmap = {
+      4C7A0100000010000000100000001D0300000000000078DA75530B4893511855
+      442B222208A2A8DC746436A5685B739656A21626A39615CB779025A9650C6306
+      15D9BBB449EA324A5352137551994E5B5B69364DCB5E6B5B9B653A9DCE66B574
+      19324FFFFFC7C48C3E3870B99CF3DDEF71AE8BCBDF91C0F2F28FE5D0729302BD
+      B4A2705F3B09F21CC7A24962D9DE7E2EFF89540663461C875670213E6442ABA8
+      C00F4B2FC67F8D61FCA71DB67E2334F29B381713EC8867D3F37630991ED3B57B
+      02E88F1F493361FF3A8431DB57FCFC66857D7808D6FE1E8C0C993162E9C3F7BE
+      8F68C84D472297A69A9A239E4D93CA2587094E3F6C03BDD077B613DC6E0C1834
+      88DC1C0EB3FE0D863FE960EDD2E28B510379762AE2D89E579CFD9ED919306135
+      BEC370B71EBAB666F8F9FA405E55866B39E7415020DCC6C7A0A603A6576A985F
+      B7C2D4A1425614C711CF59CA2467A52EC98245FB92E2D4144929CD5ACE6ADC2F
+      B94A9D3D3CDCD1D3A64472EC2ED49748F1B9A5014DF9198865D372F6057AE98C
+      8ADB44CE2730B5AB5057FA474342597E1D824D2138234A414DC145EA2E411009
+      C3C36ABCABBA82BD3CFAFBF410EFD18F2A193AEEDEC2BD6B97A16BAC46794E16
+      CA2E9D84A1B10A1FE495D0D75740B82594D207B1FC619417415F9B8F831BBD47
+      49E86A4BD0292B829B9B1B3C172D40B5E4180CF262149F4E2774EB9112BD05A5
+      E7D2B03D9C8BFAC223E85648D0557F1687363046C8FADF569E46576321782B97
+      516F30198B515798015757D7C95E2282FDA0B89106D3E353E87B42D476278DAA
+      9FF4952A3B1A3DCA8B78253B86D4988D7870351927532326B54ECC9B3B0B834F
+      33606911A139974FEC909E4D7AF2049FE9E8551C81B9F928069AC530A9449833
+      DBE31F3D6FD5420CB7EE87A52911C7F9BE8E68EED2157FFC43CFAB110763E859
+      0AACEA03042719823006A5993F6F2636072D81441C80C116216CCF8590657241
+      EEDDE93FD28B896B684A9998872F4F77C3D6118D1F2F8430370930F2320AA39D
+      02D83BB7E2BB3A12323107896B3C1F25B158EE53FF009983F4E409FE72873A6F
+      1DCC0D61B0B59208C54043085AF37944CD3E0EEA6F4ED34E0DCA9384AF9202E9
+      EF0F11DE2041CD999895B3DFA9F11B7CF40389
+    }
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 449
+    Top = 48
+    object MenuItem3: TMenuItem
+      Caption = 'Exit'
+      OnClick = MenuItem3Click
+    end
+  end
+end
