@@ -21,9 +21,9 @@ object Form1: TForm1
     Height = 523
     Top = 26
     Width = 829
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Anchors = [akTop, akLeft, akRight, akBottom]
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Actual'
@@ -169,10 +169,9 @@ object Form1: TForm1
         AnchorSideTop.Control = TabSheet2
         AnchorSideRight.Control = TabSheet2
         AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Control = TabSheet2
-        AnchorSideBottom.Side = asrBottom
+        AnchorSideBottom.Control = Shape1
         Left = 0
-        Height = 495
+        Height = 480
         Top = 0
         Width = 821
         AxisList = <        
@@ -228,7 +227,7 @@ object Form1: TForm1
         end
         object Chart1LineSeries2: TLineSeries
           AxisIndexX = 1
-          LinePen.Color = 4210816
+          LinePen.Color = clMaroon
           Source = ListChartSource2
         end
         object Chart1LineSeries3: TLineSeries
@@ -248,6 +247,117 @@ object Form1: TForm1
           LinePen.Color = clRed
           Source = ListChartSource5
         end
+      end
+      object Shape1: TShape
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 4
+        Height = 15
+        Top = 480
+        Width = 20
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clBlue
+      end
+      object Shape2: TShape
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 80
+        Height = 15
+        Top = 480
+        Width = 20
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clMaroon
+      end
+      object Shape3: TShape
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 160
+        Height = 15
+        Top = 480
+        Width = 20
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clFuchsia
+      end
+      object Shape4: TShape
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 272
+        Height = 15
+        Top = 480
+        Width = 20
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clGreen
+      end
+      object Shape5: TShape
+        AnchorSideBottom.Control = TabSheet2
+        AnchorSideBottom.Side = asrBottom
+        Left = 376
+        Height = 15
+        Top = 480
+        Width = 20
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clRed
+      end
+      object Label1: TLabel
+        AnchorSideLeft.Control = Shape1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Shape1
+        AnchorSideBottom.Side = asrBottom
+        Left = 29
+        Height = 15
+        Top = 480
+        Width = 24
+        BorderSpacing.Left = 5
+        Caption = 'I_DC'
+        ParentColor = False
+      end
+      object Label2: TLabel
+        AnchorSideLeft.Control = Shape2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Shape2
+        Left = 105
+        Height = 15
+        Top = 480
+        Width = 28
+        BorderSpacing.Left = 5
+        Caption = 'V_DC'
+        ParentColor = False
+      end
+      object Label3: TLabel
+        AnchorSideLeft.Control = Shape3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Shape3
+        Left = 185
+        Height = 15
+        Top = 480
+        Width = 54
+        BorderSpacing.Left = 5
+        Caption = 'LineSpeed'
+        ParentColor = False
+      end
+      object Label4: TLabel
+        AnchorSideLeft.Control = Shape4
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Shape4
+        Left = 297
+        Height = 15
+        Top = 480
+        Width = 58
+        BorderSpacing.Left = 5
+        Caption = 'Power_Out'
+        ParentColor = False
+      end
+      object Label5: TLabel
+        AnchorSideLeft.Control = Shape5
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Shape5
+        Left = 401
+        Height = 15
+        Top = 480
+        Width = 32
+        BorderSpacing.Left = 5
+        Caption = 'V_Out'
+        ParentColor = False
       end
     end
     object TabSheet3: TTabSheet
