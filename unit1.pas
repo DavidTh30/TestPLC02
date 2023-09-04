@@ -7,16 +7,15 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ComCtrls, TAGraph, TASources, TATransformations, tcp_udpport,
-  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel, HMICheckBox,
-  TASeries, TAChartUtils, Types;
+  ISOTCPDriver, PLCBlock, PLCBlockElement, HMILabel,
+  TASeries, TAChartUtils, Types, LazUTF8;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
+    Button3: TButton;
     Chart1: TChart;
     Chart1LineSeries1: TLineSeries;
     Chart1LineSeries2: TLineSeries;
@@ -25,6 +24,15 @@ type
     Chart1LineSeries5: TLineSeries;
     ChartAxisTransformations1: TChartAxisTransformations;
     ChartAxisTransformations1LinearAxisTransform1: TLinearAxisTransform;
+    ConnectMenu: TPopupMenu;
+    Connect: TMenuItem;
+    Disconnect: TMenuItem;
+    ToolButton2: TToolButton;
+    V_DC_CheckBox: TCheckBox;
+    LineSpeed_CheckBox: TCheckBox;
+    Power_Out_CheckBox: TCheckBox;
+    V_Out_CheckBox: TCheckBox;
+    I_DC_CheckBox: TCheckBox;
     DB1_258: TPLCBlock;
     DB1_252: TPLCBlock;
     DB1_68to76: TPLCBlock;
@@ -40,23 +48,32 @@ type
     HMILabel5: THMILabel;
     ImageList1: TImageList;
     ISOTCPDriver1: TISOTCPDriver;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
     ListChartSource1: TListChartSource;
     ListChartSource2: TListChartSource;
     ListChartSource3: TListChartSource;
     ListChartSource4: TListChartSource;
     ListChartSource5: TListChartSource;
     Memo1: TMemo;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
+    ChartZoomOutMenu: TMenuItem;
+    MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
+    MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
+    MenuItem14: TMenuItem;
+    MenuItem15: TMenuItem;
+    MenuItem16: TMenuItem;
+    MenuItem17: TMenuItem;
+    ChartRefreshMenu: TMenuItem;
     MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    ChartZoomInMenu: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     PageControl1: TPageControl;
-    PopupMenu1: TPopupMenu;
-    PopupMenu2: TPopupMenu;
+    ChartMenu: TPopupMenu;
+    FileMenu: TPopupMenu;
     Shape1: TShape;
     Shape2: TShape;
     Shape3: TShape;
@@ -71,8 +88,7 @@ type
     Timer2: TTimer;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
     procedure Chart1Click(Sender: TObject);
     procedure Chart1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -80,14 +96,23 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure Chart1MouseEnter(Sender: TObject);
     procedure Chart1MouseLeave(Sender: TObject);
+    procedure ConnectClick(Sender: TObject);
+    procedure DisconnectClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-    procedure MenuItem1Click(Sender: TObject);
-    procedure MenuItem2Click(Sender: TObject);
+    procedure ChartZoomOutMenuClick(Sender: TObject);
+    procedure ChartRefreshMenuClick(Sender: TObject);
+    procedure I_DC_CheckBoxEditingDone(Sender: TObject);
+    procedure LineSpeed_CheckBoxEditingDone(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem4Click(Sender: TObject);
+    procedure ChartZoomInMenuClick(Sender: TObject);
+    procedure Power_Out_CheckBoxEditingDone(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure V_DC_CheckBoxEditingDone(Sender: TObject);
+    procedure V_Out_CheckBoxEditingDone(Sender: TObject);
   private
 
   public
@@ -101,6 +126,7 @@ var
   Directory_:string;
   Chart_Enter:boolean;
   Chatr_Zoom:integer;
+  ChartSimulate:boolean;
 
 implementation
 
@@ -177,28 +203,9 @@ begin
 
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  i:integer;
+procedure TForm1.Button3Click(Sender: TObject);
 begin
-  TCP_UDPPort1.ExclusiveDevice:=True;
-    for i := 0 to 1000 do
-    begin
-      application.ProcessMessages;
-    end;
-    TCP_UDPPort1.Active:=True;
-end;
-
-procedure TForm1.Button2Click(Sender: TObject);
-var
-  i:integer;
-begin
-  TCP_UDPPort1.Active:=false;
-    for i := 0 to 1000 do
-    begin
-      application.ProcessMessages;
-    end;
-    TCP_UDPPort1.ExclusiveDevice:=false;
+  ChartSimulate:=not ChartSimulate;
 end;
 
 procedure TForm1.Chart1Click(Sender: TObject);
@@ -226,6 +233,30 @@ end;
 procedure TForm1.Chart1MouseLeave(Sender: TObject);
 begin
   Chart_Enter:=false;
+end;
+
+procedure TForm1.ConnectClick(Sender: TObject);
+var
+  i:integer;
+begin
+  TCP_UDPPort1.ExclusiveDevice:=True;
+    for i := 0 to 1000 do
+    begin
+      application.ProcessMessages;
+    end;
+    TCP_UDPPort1.Active:=True;
+end;
+
+procedure TForm1.DisconnectClick(Sender: TObject);
+var
+  i:integer;
+begin
+  TCP_UDPPort1.Active:=false;
+    for i := 0 to 1000 do
+    begin
+      application.ProcessMessages;
+    end;
+    TCP_UDPPort1.ExclusiveDevice:=false;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -285,33 +316,77 @@ begin
 
 end;
 
-procedure TForm1.MenuItem1Click(Sender: TObject);
+procedure TForm1.ChartZoomOutMenuClick(Sender: TObject);
 var
   AC: TDoublePoint;
   AZ: TDoubleRect;
 begin
   Chart1.Tag:=1;
   AC:=Chart1.LogicalExtent.a;
-  AC.X:=AC.X-1;
-  AC.Y:=AC.Y-1;
+  AC.X:=AC.X-2;
+  AC.Y:=AC.Y-2;
   AZ.a:=AC;
   AC:=Chart1.LogicalExtent.b;
-  AC.X:=AC.X+1;
-  AC.Y:=AC.Y+1;
+  AC.X:=AC.X+2;
+  AC.Y:=AC.Y+2;
   AZ.b:=AC;
   Chart1.LogicalExtent:=AZ;
-  Chatr_Zoom:=Chatr_Zoom-1;
+  Chatr_Zoom:=Chatr_Zoom-2;
 end;
 
-procedure TForm1.MenuItem2Click(Sender: TObject);
+procedure TForm1.ChartRefreshMenuClick(Sender: TObject);
 begin
   Chart1.Tag:=0;
   Chatr_Zoom:=0;
 end;
 
+procedure TForm1.I_DC_CheckBoxEditingDone(Sender: TObject);
+begin
+  Chart1LineSeries1.Active:=I_DC_CheckBox.Checked;
+end;
+
+procedure TForm1.LineSpeed_CheckBoxEditingDone(Sender: TObject);
+begin
+  Chart1LineSeries3.Active:=LineSpeed_CheckBox.Checked;
+end;
+
 procedure TForm1.MenuItem3Click(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TForm1.MenuItem4Click(Sender: TObject);
+begin
+  //Directory_
+  //FileName_
+  //SysUtils.ExecuteProcess(UTF8ToSys('explorer.exe'), '/select,C:\Windows\explorer.exe', []);
+  SysUtils.ExecuteProcess(UTF8ToSys('explorer.exe'), '/select,'+FileName_, []);
+end;
+
+procedure TForm1.ChartZoomInMenuClick(Sender: TObject);
+var
+  AC: TDoublePoint;
+  AZ: TDoubleRect;
+begin
+  if(Chatr_Zoom<=26)then
+      begin
+        Chart1.Tag:=1;
+        AC:=Chart1.LogicalExtent.a;
+        AC.X:=AC.X+2;
+        AC.Y:=AC.Y+2;
+        AZ.a:=AC;
+        AC:=Chart1.LogicalExtent.b;
+        AC.X:=AC.X-2;
+        AC.Y:=AC.Y-2;
+        AZ.b:=AC;
+        Chart1.LogicalExtent:=AZ;
+        Chatr_Zoom:=Chatr_Zoom+2;
+      end;
+end;
+
+procedure TForm1.Power_Out_CheckBoxEditingDone(Sender: TObject);
+begin
+  Chart1LineSeries4.Active:=Power_Out_CheckBox.Checked;
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
@@ -418,27 +493,27 @@ begin
   Txt:=FormatDateTime('hh',  Now)+':'+FormatDateTime('nn',  Now)+':'+FormatDateTime('ss',  Now);
 
   Ra:= DB1_DBD68.Value;
-  //Ra:= Int(Random(1*1000));
+  if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
-  if ListChartSource1.Count < MaxRecordTime then ListChartSource1.Add(ListChartSource1.Count,Ra,Txt,clBlue);    //I_DC  DB1_DBD68
+  if ListChartSource1.Count < MaxRecordTime then ListChartSource1.Add(ListChartSource1.Count,Ra,Txt,clBlue);    //I_DC_CheckBox  DB1_DBD68
 
   Ra:= DB1_DBD72.Value;
-  //Ra:= Int(Random(1*1000));
+  if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
   if ListChartSource4.Count < MaxRecordTime then ListChartSource2.Add(ListChartSource2.Count,Ra,Txt,clMaroon); //V_DC  DB1_DBD72
 
   Ra:= DB1_DBD76.Value;
-  //Ra:= Int(Random(1*1000));
+  if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource3.Add(ListChartSource3.Count,Ra,Txt,clFuchsia);   //LineSpeed  DB1_DBD76
 
   Ra:= DB1_DBD252.Value;
-  //Ra:= Int(Random(1*1000));
+  if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource4.Add(ListChartSource4.Count,Ra,Txt,clGreen);   //Power_Out  DB1_DBD252
 
   Ra:= DB1_DBD258.Value;
-  //Ra:= Int(Random(1*1000));
+  if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource5.Add(ListChartSource5.Count,Ra,Txt,clRed);   //V_Out  DB1_DBD258
 
@@ -469,6 +544,16 @@ procedure TForm1.Timer2Timer(Sender: TObject);
 begin
 
 
+end;
+
+procedure TForm1.V_DC_CheckBoxEditingDone(Sender: TObject);
+begin
+  Chart1LineSeries2.Active:=V_DC_CheckBox.Checked;
+end;
+
+procedure TForm1.V_Out_CheckBoxEditingDone(Sender: TObject);
+begin
+  Chart1LineSeries5.Active:=V_Out_CheckBox.Checked;
 end;
 
 end.
