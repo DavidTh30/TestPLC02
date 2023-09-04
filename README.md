@@ -1,4 +1,5 @@
 # TestPLC02
  TestPLC02
-![image](https://github.com/DavidTh30/TestPLC01/assets/6564727/d15a8974-13ad-49b1-8185-9c1d82b40f32)
-![image](https://github.com/DavidTh30/TestPLC01/assets/6564727/46b9625e-a44f-41cf-bb19-649aa95279ac)
+![image](https://github.com/DavidTh30/TestPLC02/assets/6564727/698304bb-00a0-441d-ba65-2c9196f07c88)
+![image](https://github.com/DavidTh30/TestPLC02/assets/6564727/1f8dd5dd-166a-4413-8546-721128942e8d)
+![image](https://github.com/DavidTh30/TestPLC02/assets/6564727/57e70b11-619b-489e-b75f-aa5296bb7eb6)
