@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = -1243
+  Left = -1297
   Height = 572
-  Top = -474
+  Top = -424
   Width = 829
-  Caption = 'PLC:192.168.200.2  Port:102'
+  Caption = 'PLC:192.168.200.2  Port:102  04/09/2023 18:32'
   ClientHeight = 572
   ClientWidth = 829
   OnCreate = FormCreate
@@ -21,46 +21,27 @@ object Form1: TForm1
     Height = 523
     Top = 26
     Width = 829
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Anchors = [akTop, akLeft, akRight, akBottom]
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Actual'
       ClientHeight = 495
       ClientWidth = 821
-      object Button1: TButton
-        Left = 24
-        Height = 29
-        Top = 5
-        Width = 151
-        BorderSpacing.Left = 22
-        BorderSpacing.Top = 3
-        Caption = 'Connect'
-        OnClick = Button1Click
-        TabOrder = 0
-      end
-      object Button2: TButton
-        Left = 24
-        Height = 29
-        Top = 40
-        Width = 151
-        Caption = 'Disconnect'
-        OnClick = Button2Click
-        TabOrder = 1
-      end
       object HMILabel1: THMILabel
-        Left = 100
-        Height = 25
+        Left = 24
+        Height = 30
         Hint = 'DB1_DBD68'
-        Top = 112
-        Width = 98
+        Top = 120
+        Width = 119
         AutoSize = True
         Enabled = True
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
+        Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
+        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         ParentShowHint = False
@@ -72,17 +53,21 @@ object Form1: TForm1
         FormatDateTimeOptions = []
       end
       object HMILabel2: THMILabel
-        Left = 100
-        Height = 25
+        AnchorSideLeft.Control = HMILabel1
+        AnchorSideTop.Control = HMILabel1
+        AnchorSideTop.Side = asrBottom
+        Left = 24
+        Height = 30
         Hint = 'DB1_DBD72'
-        Top = 144
-        Width = 105
+        Top = 150
+        Width = 125
         AutoSize = True
         Enabled = True
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
+        Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
+        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         ParentShowHint = False
@@ -94,17 +79,21 @@ object Form1: TForm1
         FormatDateTimeOptions = []
       end
       object HMILabel3: THMILabel
-        Left = 104
-        Height = 25
+        AnchorSideLeft.Control = HMILabel1
+        AnchorSideTop.Control = HMILabel2
+        AnchorSideTop.Side = asrBottom
+        Left = 24
+        Height = 30
         Hint = 'DB1_DBD76'
-        Top = 176
-        Width = 111
+        Top = 180
+        Width = 134
         AutoSize = True
         Enabled = True
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
+        Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
+        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         ParentShowHint = False
@@ -116,17 +105,21 @@ object Form1: TForm1
         FormatDateTimeOptions = []
       end
       object HMILabel4: THMILabel
-        Left = 100
-        Height = 25
+        AnchorSideLeft.Control = HMILabel1
+        AnchorSideTop.Control = HMILabel3
+        AnchorSideTop.Side = asrBottom
+        Left = 24
+        Height = 30
         Hint = 'DB1_DBD252'
-        Top = 208
-        Width = 190
+        Top = 210
+        Width = 227
         AutoSize = True
         Enabled = True
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
+        Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
+        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         ParentShowHint = False
@@ -138,17 +131,21 @@ object Form1: TForm1
         FormatDateTimeOptions = []
       end
       object HMILabel5: THMILabel
-        Left = 100
-        Height = 25
+        AnchorSideLeft.Control = HMILabel1
+        AnchorSideTop.Control = HMILabel4
+        AnchorSideTop.Side = asrBottom
+        Left = 24
+        Height = 30
         Hint = 'DB1_DBD258'
-        Top = 232
-        Width = 158
+        Top = 240
+        Width = 189
         AutoSize = True
         Enabled = True
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
+        Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
+        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         ParentShowHint = False
@@ -171,7 +168,7 @@ object Form1: TForm1
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = Shape1
         Left = 0
-        Height = 480
+        Height = 477
         Top = 0
         Width = 821
         AxisList = <        
@@ -210,7 +207,7 @@ object Form1: TForm1
           'TAChart'
         )
         Anchors = [akTop, akLeft, akRight, akBottom]
-        PopupMenu = PopupMenu1
+        PopupMenu = ChartMenu
         OnClick = Chart1Click
         OnDragOver = Chart1DragOver
         OnMouseDown = Chart1MouseDown
@@ -252,112 +249,139 @@ object Form1: TForm1
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
         Left = 4
-        Height = 15
-        Top = 480
+        Height = 18
+        Top = 477
         Width = 20
         Anchors = [akLeft, akBottom]
         Brush.Color = clBlue
       end
       object Shape2: TShape
+        AnchorSideLeft.Control = I_DC_CheckBox
+        AnchorSideLeft.Side = asrBottom
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
-        Left = 80
-        Height = 15
-        Top = 480
+        Left = 85
+        Height = 18
+        Top = 477
         Width = 20
         Anchors = [akLeft, akBottom]
+        BorderSpacing.Left = 12
         Brush.Color = clMaroon
       end
       object Shape3: TShape
+        AnchorSideLeft.Control = V_DC_CheckBox
+        AnchorSideLeft.Side = asrBottom
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
-        Left = 160
-        Height = 15
-        Top = 480
+        Left = 170
+        Height = 18
+        Top = 477
         Width = 20
         Anchors = [akLeft, akBottom]
+        BorderSpacing.Left = 12
         Brush.Color = clFuchsia
       end
       object Shape4: TShape
+        AnchorSideLeft.Control = LineSpeed_CheckBox
+        AnchorSideLeft.Side = asrBottom
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
-        Left = 272
-        Height = 15
-        Top = 480
+        Left = 281
+        Height = 18
+        Top = 477
         Width = 20
         Anchors = [akLeft, akBottom]
+        BorderSpacing.Left = 12
         Brush.Color = clGreen
       end
       object Shape5: TShape
+        AnchorSideLeft.Control = Power_Out_CheckBox
+        AnchorSideLeft.Side = asrBottom
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
-        Left = 376
-        Height = 15
-        Top = 480
+        Left = 396
+        Height = 18
+        Top = 477
         Width = 20
         Anchors = [akLeft, akBottom]
+        BorderSpacing.Left = 12
         Brush.Color = clRed
       end
-      object Label1: TLabel
+      object I_DC_CheckBox: TCheckBox
         AnchorSideLeft.Control = Shape1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Shape1
-        AnchorSideBottom.Side = asrBottom
         Left = 29
-        Height = 15
-        Top = 480
-        Width = 24
+        Height = 19
+        Top = 477
+        Width = 44
         BorderSpacing.Left = 5
         Caption = 'I_DC'
-        ParentColor = False
+        Checked = True
+        OnEditingDone = I_DC_CheckBoxEditingDone
+        State = cbChecked
+        TabOrder = 1
       end
-      object Label2: TLabel
+      object V_DC_CheckBox: TCheckBox
         AnchorSideLeft.Control = Shape2
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Shape2
-        Left = 105
-        Height = 15
-        Top = 480
-        Width = 28
+        AnchorSideBottom.Side = asrBottom
+        Left = 110
+        Height = 19
+        Top = 477
+        Width = 48
         BorderSpacing.Left = 5
         Caption = 'V_DC'
-        ParentColor = False
+        Checked = True
+        OnEditingDone = V_DC_CheckBoxEditingDone
+        State = cbChecked
+        TabOrder = 2
       end
-      object Label3: TLabel
+      object LineSpeed_CheckBox: TCheckBox
         AnchorSideLeft.Control = Shape3
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Shape3
-        Left = 185
-        Height = 15
-        Top = 480
-        Width = 54
+        Left = 195
+        Height = 19
+        Top = 477
+        Width = 74
         BorderSpacing.Left = 5
         Caption = 'LineSpeed'
-        ParentColor = False
+        Checked = True
+        OnEditingDone = LineSpeed_CheckBoxEditingDone
+        State = cbChecked
+        TabOrder = 3
       end
-      object Label4: TLabel
+      object Power_Out_CheckBox: TCheckBox
         AnchorSideLeft.Control = Shape4
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Shape4
-        Left = 297
-        Height = 15
-        Top = 480
-        Width = 58
+        Left = 306
+        Height = 19
+        Top = 477
+        Width = 78
         BorderSpacing.Left = 5
         Caption = 'Power_Out'
-        ParentColor = False
+        Checked = True
+        OnEditingDone = Power_Out_CheckBoxEditingDone
+        State = cbChecked
+        TabOrder = 4
       end
-      object Label5: TLabel
+      object V_Out_CheckBox: TCheckBox
         AnchorSideLeft.Control = Shape5
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Shape5
-        Left = 401
-        Height = 15
-        Top = 480
-        Width = 32
+        Left = 421
+        Height = 19
+        Top = 477
+        Width = 52
         BorderSpacing.Left = 5
         Caption = 'V_Out'
-        ParentColor = False
+        Checked = True
+        OnEditingDone = V_Out_CheckBoxEditingDone
+        State = cbChecked
+        TabOrder = 5
       end
     end
     object TabSheet3: TTabSheet
@@ -378,6 +402,15 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssAutoBoth
         TabOrder = 0
+      end
+      object Button3: TButton
+        Left = 25
+        Height = 28
+        Top = 64
+        Width = 95
+        Caption = 'Simulate'
+        OnClick = Button3Click
+        TabOrder = 1
       end
     end
   end
@@ -400,8 +433,14 @@ object Form1: TForm1
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
-      Caption = 'File'
-      DropdownMenu = PopupMenu2
+      Caption = '   File   '
+      DropdownMenu = FileMenu
+    end
+    object ToolButton2: TToolButton
+      Left = 45
+      Top = 2
+      Caption = '   Connect   '
+      DropdownMenu = ConnectMenu
     end
   end
   object TCP_UDPPort1: TTCP_UDPPort
@@ -444,18 +483,58 @@ object Form1: TForm1
       Offset = 2
     end
   end
-  object PopupMenu1: TPopupMenu
+  object ChartMenu: TPopupMenu
     Images = ImageList1
     ImagesWidth = 10
-    Left = 392
-    Top = 48
-    object MenuItem1: TMenuItem
-      Caption = 'ZoomOut'
-      OnClick = MenuItem1Click
+    Left = 352
+    Top = 56
+    object ChartZoomInMenu: TMenuItem
+      Caption = 'ZoomIn'
+      OnClick = ChartZoomInMenuClick
     end
-    object MenuItem2: TMenuItem
+    object ChartZoomOutMenu: TMenuItem
+      Caption = 'ZoomOut'
+      OnClick = ChartZoomOutMenuClick
+    end
+    object ChartRefreshMenu: TMenuItem
       Caption = 'Refresh'
-      OnClick = MenuItem2Click
+      OnClick = ChartRefreshMenuClick
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Enable'
+      object MenuItem8: TMenuItem
+        Caption = 'I_DC'
+      end
+      object MenuItem9: TMenuItem
+        Caption = 'V_DC'
+      end
+      object MenuItem10: TMenuItem
+        Caption = 'LineSpeed'
+      end
+      object MenuItem11: TMenuItem
+        Caption = 'Power_Out'
+      end
+      object MenuItem12: TMenuItem
+        Caption = 'V_Out'
+      end
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'Disable'
+      object MenuItem13: TMenuItem
+        Caption = 'I_DC'
+      end
+      object MenuItem14: TMenuItem
+        Caption = 'V_DC'
+      end
+      object MenuItem15: TMenuItem
+        Caption = 'LineSpeed'
+      end
+      object MenuItem16: TMenuItem
+        Caption = 'Power_Out'
+      end
+      object MenuItem17: TMenuItem
+        Caption = 'V_Out'
+      end
     end
   end
   object Timer2: TTimer
@@ -615,12 +694,28 @@ object Form1: TForm1
       EF0F11DE2041CD999895B3DFA9F11B7CF40389
     }
   end
-  object PopupMenu2: TPopupMenu
-    Left = 449
-    Top = 48
+  object FileMenu: TPopupMenu
+    Left = 408
+    Top = 56
+    object MenuItem4: TMenuItem
+      Caption = 'Open Data folder'
+      OnClick = MenuItem4Click
+    end
     object MenuItem3: TMenuItem
       Caption = 'Exit'
       OnClick = MenuItem3Click
+    end
+  end
+  object ConnectMenu: TPopupMenu
+    Left = 456
+    Top = 56
+    object Connect: TMenuItem
+      Caption = 'Connect'
+      OnClick = ConnectClick
+    end
+    object Disconnect: TMenuItem
+      Caption = 'Disconnect'
+      OnClick = DisconnectClick
     end
   end
 end
