@@ -448,14 +448,6 @@ begin
   // The process has finished so it can be cleaned up
   AProcess.Free;
 
-  // Now that all data has been read it can be used; for example to save it to a file on disk
-  with TFileStream.Create('output.txt', fmCreate) do
-  begin
-    OutputStream.Position := 0; // Required to make sure all data is copied from the start
-    CopyFrom(OutputStream, OutputStream.Size);
-    Free
-  end;
-
   // Or the data can be shown on screen
   with TStringList.Create do
   begin
@@ -521,14 +513,6 @@ begin
   // The process has finished so it can be cleaned up
   AProcess.Free;
 
-  // Now that all data has been read it can be used; for example to save it to a file on disk
-  with TFileStream.Create('output.txt', fmCreate) do
-  begin
-    OutputStream.Position := 0; // Required to make sure all data is copied from the start
-    CopyFrom(OutputStream, OutputStream.Size);
-    Free
-  end;
-
   // Or the data can be shown on screen
   with TStringList.Create do
   begin
@@ -593,14 +577,6 @@ begin
 
   // The process has finished so it can be cleaned up
   AProcess.Free;
-
-  // Now that all data has been read it can be used; for example to save it to a file on disk
-  with TFileStream.Create('output.txt', fmCreate) do
-  begin
-    OutputStream.Position := 0; // Required to make sure all data is copied from the start
-    CopyFrom(OutputStream, OutputStream.Size);
-    Free
-  end;
 
   // Or the data can be shown on screen
   with TStringList.Create do
