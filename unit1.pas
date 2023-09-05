@@ -844,6 +844,11 @@ end;
 procedure TForm1.Memo01CopyClick(Sender: TObject);
 begin
   Memo1.CopyToClipboard;
+
+  //my_clipboard.Clear;
+  //curr_text:= Memo1.Lines.Text;//curr_text : String
+  //if my_clipboard.HasFormat(CF_Text) then
+    //my_clipboard.AsText:= curr_text;
 end;
 
 procedure TForm1.Memo01GetfileandfolderClick(Sender: TObject);
