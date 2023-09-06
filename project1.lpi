@@ -97,6 +97,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="eccontrols"/>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
       </Item>
       <Item>
