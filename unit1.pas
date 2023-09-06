@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ComCtrls, uCmdBox, TAGraph, TASources, TATransformations, tcp_udpport,
-  ISOTCPDriver, PLCBlock, PLCBlockElement, HMILabel,
-  TASeries, TAChartUtils, Types, LazUTF8, process, JwaWinBase, windows, AsyncProcess,
-  LCLType;
+  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel, HMIProgressBar,
+  HMITrackBar, TASeries, TAChartUtils, Types, LazUTF8, process, JwaWinBase,
+  windows, AsyncProcess, LCLType, ECRuler;
 
 type
 
@@ -21,7 +21,15 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
+    DB1_DBD278: TPLCBlockElement;
+    DB1_DBD48: TPLCBlockElement;
+    DB1_48: TPLCBlock;
+    DB1_278: TPLCBlock;
+    ECRuler1: TECRuler;
+    ECRuler2: TECRuler;
+    ECRuler3: TECRuler;
     Edit1: TEdit;
+    Flags_From_MB0: TPLCBlock;
     FProcess: TAsyncProcess;
     Button1: TButton;
     Button2: TButton;
@@ -38,6 +46,29 @@ type
     ConnectMenu: TPopupMenu;
     Connect: TMenuItem;
     Disconnect: TMenuItem;
+    HMILabel1: THMILabel;
+    ISOTCPDriver1: TISOTCPDriver;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label_Speed: TLabel;
+    Label_PwrOut: TLabel;
+    Label_Idc: TLabel;
+    Label_PL: TLabel;
+    Label_ACT: TLabel;
+    Label_Vdc: TLabel;
+    Label_Vout: TLabel;
+    MB0: TPLCBlockElement;
+    MB0_bit0: TTagBit;
+    MB0_bit1: TTagBit;
+    MB0_bit2: TTagBit;
+    MB0_bit3: TTagBit;
+    MB0_bit4: TTagBit;
+    MB0_bit5: TTagBit;
+    MB0_bit6: TTagBit;
+    MB0_bit7: TTagBit;
     Memo01SelectAll: TMenuItem;
     Memo01Copy: TMenuItem;
     Memo01Clear: TMenuItem;
@@ -47,6 +78,24 @@ type
     Memo01IpconfigAll: TMenuItem;
     Memo01Ping: TMenuItem;
     Memo01Ipconfig: TMenuItem;
+    ConnectStep5: TShape;
+    ConnectStep6: TShape;
+    ConnectStep7: TShape;
+    ConnectStep8: TShape;
+    ConnectStep9: TShape;
+    ConnectStep10: TShape;
+    ConnectStep1: TShape;
+    ConnectStep2: TShape;
+    ConnectStep3: TShape;
+    ConnectStep4: TShape;
+    ProgressBar_PwrOut: TProgressBar;
+    ProgressBar_PL: TProgressBar;
+    ProgressBar_ACT: TProgressBar;
+    Shape10: TShape;
+    Shape6: TShape;
+    Shape7: TShape;
+    Shape8: TShape;
+    Shape9: TShape;
     ToolButton2: TToolButton;
     V_DC_CheckBox: TCheckBox;
     LineSpeed_CheckBox: TCheckBox;
@@ -61,13 +110,12 @@ type
     DB1_DBD68: TPLCBlockElement;
     DB1_DBD72: TPLCBlockElement;
     DB1_DBD76: TPLCBlockElement;
-    HMILabel1: THMILabel;
-    HMILabel2: THMILabel;
-    HMILabel3: THMILabel;
-    HMILabel4: THMILabel;
-    HMILabel5: THMILabel;
+    HMI_Idc: THMILabel;
+    HMI_Vdc: THMILabel;
+    HMI_Vout: THMILabel;
+    HMI_Speed: THMILabel;
+    HMI_PwrOut: THMILabel;
     ImageList1: TImageList;
-    ISOTCPDriver1: TISOTCPDriver;
     ListChartSource1: TListChartSource;
     ListChartSource2: TListChartSource;
     ListChartSource3: TListChartSource;
@@ -147,6 +195,9 @@ type
     procedure MenuItem4Click(Sender: TObject);
     procedure ChartZoomInMenuClick(Sender: TObject);
     procedure Power_Out_CheckBoxEditingDone(Sender: TObject);
+    procedure Shape10ChangeBounds(Sender: TObject);
+    procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure V_DC_CheckBoxEditingDone(Sender: TObject);
@@ -167,6 +218,10 @@ var
   Chart_Enter:boolean;
   Chatr_Zoom:integer;
   ChartSimulate:boolean;
+  CPU_Clock_counter:integer;
+  CPU_Clock_OldBit:Boolean;
+  Old_CPU_Clock_counter:integer;
+  Error_CPU_Clock_counter:integer;
 
 implementation
 
@@ -706,18 +761,23 @@ procedure TForm1.ConnectClick(Sender: TObject);
 var
   i:integer;
 begin
+  ConnectMenu.Items[0].Enabled:=false;
+  ConnectMenu.Items[1].Enabled:=true;
   TCP_UDPPort1.ExclusiveDevice:=True;
     for i := 0 to 1000 do
     begin
       application.ProcessMessages;
     end;
     TCP_UDPPort1.Active:=True;
+
 end;
 
 procedure TForm1.DisconnectClick(Sender: TObject);
 var
   i:integer;
 begin
+  ConnectMenu.Items[1].Enabled:=false;
+  ConnectMenu.Items[0].Enabled:=true;
   TCP_UDPPort1.Active:=false;
     for i := 0 to 1000 do
     begin
@@ -745,6 +805,11 @@ begin
   Chatr_Zoom:=0;
   PageControl1.TabIndex:=0;
 
+  CPU_Clock_counter:=0;
+  CPU_Clock_OldBit:=false;
+
+  Old_CPU_Clock_counter:=0;
+  Error_CPU_Clock_counter:=0;
 end;
 
 procedure TForm1.FormMouseWheel(Sender: TObject; Shift: TShiftState;
@@ -935,6 +1000,17 @@ begin
   Chart1LineSeries4.Active:=Power_Out_CheckBox.Checked;
 end;
 
+procedure TForm1.Shape10ChangeBounds(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
+end;
+
 procedure TForm1.Timer1Timer(Sender: TObject);
 var
   i:integer;
@@ -997,7 +1073,7 @@ begin
      on E: EInOutError do
      try
        rewrite (fileout);
-       writeln(fileout, 'Date,Time,I_DC,V_DC,LineSpeed,Power_Out,V_Out');
+       writeln(fileout, 'Date,Time,I_DC,V_DC,LineSpeed,Power_Out,V_Out,PowerSetSpecPower,SpecificPower');
      except
        //on E: EInOutError do
        //showmessage('Append: '+E.ClassName+'/'+ E.Message+'/'+IntToStr(E.ErrorCode));
@@ -1005,8 +1081,15 @@ begin
    end;
 
    try         //FloatToStr(Int(Random(1*10)))
-     //writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB3_DBD12.Value)+','+FormatFloat('####0.00',DB3_DBD30.Value)+','+FormatFloat('####0.00',DB24_DBD62.Value)+','+FloatToStr(Q1_7.Value)+','+FloatToStr(I7_0.Value));
-     writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB1_DBD68.Value)+','+FormatFloat('####0.00',DB1_DBD72.Value)+','+FormatFloat('####0.00',DB1_DBD76.Value)+','+FormatFloat('####0.00',DB1_DBD252.Value)+','+FormatFloat('####0.00',DB1_DBD258.Value));
+     if not TCP_UDPPort1.Active then
+     begin
+       writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+',-,-,-,-,-,-,-');
+     end;
+     if TCP_UDPPort1.Active then
+     begin
+       //writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB3_DBD12.Value)+','+FormatFloat('####0.00',DB3_DBD30.Value)+','+FormatFloat('####0.00',DB24_DBD62.Value)+','+FloatToStr(Q1_7.Value)+','+FloatToStr(I7_0.Value));
+       writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB1_DBD68.Value)+','+FormatFloat('####0.00',DB1_DBD72.Value)+','+FormatFloat('####0.00',DB1_DBD76.Value)+','+FormatFloat('####0.00',DB1_DBD252.Value)+','+FormatFloat('####0.00',DB1_DBD258.Value)+','+FormatFloat('####0.00',DB1_DBD48.Value)+','+FormatFloat('####0.00',DB1_DBD278.Value));
+     end;
      CloseFile(fileout);
    except
      //on E: EInOutError do
@@ -1038,29 +1121,39 @@ begin
 
   Txt:=FormatDateTime('hh',  Now)+':'+FormatDateTime('nn',  Now)+':'+FormatDateTime('ss',  Now);
 
-  Ra:= DB1_DBD68.Value;
+  if TCP_UDPPort1.Active then Ra:= DB1_DBD68.Value;
+  if not TCP_UDPPort1.Active then Ra:=0.0;
   if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
+  if Chart1.Extent.YMin>Ra then Chart1.Extent.YMin:=Ra-1;
   if ListChartSource1.Count < MaxRecordTime then ListChartSource1.Add(ListChartSource1.Count,Ra,Txt,clBlue);    //I_DC_CheckBox  DB1_DBD68
 
-  Ra:= DB1_DBD72.Value;
+  if TCP_UDPPort1.Active then Ra:= DB1_DBD72.Value;
+  if not TCP_UDPPort1.Active then Ra:=0.0;
   if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
+  if Chart1.Extent.YMin>Ra then Chart1.Extent.YMin:=Ra-1;
   if ListChartSource4.Count < MaxRecordTime then ListChartSource2.Add(ListChartSource2.Count,Ra,Txt,clMaroon); //V_DC  DB1_DBD72
 
-  Ra:= DB1_DBD76.Value;
+  if TCP_UDPPort1.Active then Ra:= DB1_DBD76.Value;
+  if not TCP_UDPPort1.Active then Ra:=0.0;
   if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
+  if Chart1.Extent.YMin>Ra then Chart1.Extent.YMin:=Ra-1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource3.Add(ListChartSource3.Count,Ra,Txt,clFuchsia);   //LineSpeed  DB1_DBD76
 
-  Ra:= DB1_DBD252.Value;
+  if TCP_UDPPort1.Active then Ra:= DB1_DBD252.Value;
+  if not TCP_UDPPort1.Active then Ra:=0.0;
   if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
+  if Chart1.Extent.YMin>Ra then Chart1.Extent.YMin:=Ra-1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource4.Add(ListChartSource4.Count,Ra,Txt,clGreen);   //Power_Out  DB1_DBD252
 
-  Ra:= DB1_DBD258.Value;
+  if TCP_UDPPort1.Active then Ra:= DB1_DBD258.Value;
+  if not TCP_UDPPort1.Active then Ra:=0.0;
   if ChartSimulate then Ra:= Int(Random(1*1000));
   if Chart1.Extent.YMax<Ra then Chart1.Extent.YMax:=Ra+1;
+  if Chart1.Extent.YMin>Ra then Chart1.Extent.YMin:=Ra-1;
   if ListChartSource5.Count < MaxRecordTime then ListChartSource5.Add(ListChartSource5.Count,Ra,Txt,clRed);   //V_Out  DB1_DBD258
 
 If (ListChartSource1.Count>240) and (Chart1.Tag = 0) then
@@ -1084,11 +1177,107 @@ If (ListChartSource1.Count>240) and (Chart1.Tag = 0) then
     if(ListChartSource1.Count>60)then
     Chart1.Extent.XMax:=ListChartSource1.Count;
   end;
+
+  if not TCP_UDPPort1.Active then
+  begin
+    HMI_Speed.Visible:=false;
+    HMI_Idc.Visible:=false;
+    HMI_Vdc.Visible:=false;
+    HMI_Vout.Visible:=false;
+    HMI_PwrOut.Visible:=false;
+    HMILabel1.Visible:=false;
+    ProgressBar_PwrOut.Position:= round(0);
+    ProgressBar_PL.Position:= round(0);
+    ProgressBar_ACT.Position:= round(0);
+  end;
+  if TCP_UDPPort1.Active then
+  begin
+    HMI_Speed.Visible:=true;
+    HMI_Idc.Visible:=true;
+    HMI_Vdc.Visible:=true;
+    HMI_Vout.Visible:=true;
+    HMI_PwrOut.Visible:=true;
+    HMILabel1.Visible:=true;
+    ProgressBar_PwrOut.Position:= round(DB1_DBD258.Value);
+    ProgressBar_PL.Position:= round(DB1_DBD48.Value);
+    ProgressBar_ACT.Position:= round(DB1_DBD278.Value);
+  end;
+
 end;
 
 procedure TForm1.Timer2Timer(Sender: TObject);
 begin
 
+  if (CPU_Clock_OldBit=true) and (MB0_bit1.Value=0) then CPU_Clock_OldBit:=false;
+  if (CPU_Clock_OldBit=false) and (MB0_bit1.Value>0) then
+  begin
+    CPU_Clock_OldBit:=true;
+    CPU_Clock_counter:=CPU_Clock_counter+1;
+  end;
+
+  if CPU_Clock_counter>=10 then CPU_Clock_counter:=0;
+
+  if CPU_Clock_counter=0 then
+    ConnectStep1.Brush.Color:=clLime
+  else
+    ConnectStep1.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=1 then
+    ConnectStep2.Brush.Color:=clLime
+  else
+    ConnectStep2.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=2 then
+    ConnectStep3.Brush.Color:=clLime
+  else
+    ConnectStep3.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=3 then
+    ConnectStep4.Brush.Color:=clLime
+  else
+    ConnectStep4.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=4 then
+    ConnectStep5.Brush.Color:=clLime
+  else
+    ConnectStep5.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=5 then
+    ConnectStep6.Brush.Color:=clLime
+  else
+    ConnectStep6.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=6 then
+    ConnectStep7.Brush.Color:=clLime
+  else
+    ConnectStep7.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=7 then
+    ConnectStep8.Brush.Color:=clLime
+  else
+    ConnectStep8.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=8 then
+    ConnectStep9.Brush.Color:=clLime
+  else
+    ConnectStep9.Brush.Color:=clWhite;
+
+  if CPU_Clock_counter=9 then
+    ConnectStep10.Brush.Color:=clLime
+  else
+    ConnectStep10.Brush.Color:=clWhite;
+
+  if Old_CPU_Clock_counter<>CPU_Clock_counter then
+  begin
+    Error_CPU_Clock_counter:=0;
+    Old_CPU_Clock_counter:=CPU_Clock_counter;
+  end;
+  if (Old_CPU_Clock_counter=CPU_Clock_counter) and TCP_UDPPort1.Active then Error_CPU_Clock_counter:=Error_CPU_Clock_counter+1;
+  if Error_CPU_Clock_counter >= 50 then
+  begin
+    Error_CPU_Clock_counter:=0;
+    DisconnectClick(Sender);
+  end;
 
 end;
 
