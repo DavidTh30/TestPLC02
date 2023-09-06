@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = -1297
+  Left = 417
   Height = 572
-  Top = -424
+  Top = 115
   Width = 829
-  Caption = 'PLC:10.10.10.40  Port:102  05/09/2023 10:02'
+  Caption = 'PLC:10.10.10.40  Port:102  06/09/2023 15:33'
   ClientHeight = 572
   ClientWidth = 829
   OnClose = FormClose
@@ -22,23 +22,58 @@ object Form1: TForm1
     Height = 523
     Top = 26
     Width = 829
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Anchors = [akTop, akLeft, akRight, akBottom]
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Actual'
       ClientHeight = 495
       ClientWidth = 821
-      object HMILabel1: THMILabel
-        Left = 24
+      OnContextPopup = TabSheet1ContextPopup
+      object Shape10: TShape
+        Left = 8
+        Height = 130
+        Top = 240
+        Width = 248
+        OnChangeBounds = Shape10ChangeBounds
+      end
+      object Shape8: TShape
+        Left = 456
+        Height = 384
+        Top = 64
+        Width = 184
+      end
+      object Shape7: TShape
+        Left = 272
+        Height = 384
+        Top = 64
+        Width = 176
+      end
+      object Shape6: TShape
+        Left = 8
+        Height = 138
+        Top = 64
+        Width = 248
+      end
+      object HMI_Idc: THMILabel
+        AnchorSideLeft.Control = Label_Idc
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label_Idc
+        AnchorSideRight.Control = HMI_Speed
+        AnchorSideRight.Side = asrBottom
+        Left = 185
         Height = 30
         Hint = 'DB1_DBD68'
-        Top = 120
-        Width = 116
-        AutoSize = True
+        Top = 103
+        Width = 63
+        Alignment = taRightJustify
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 1
+        Color = clBlue
         Enabled = True
         Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
         Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -47,24 +82,32 @@ object Form1: TForm1
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
+        Transparent = False
         NumberFormat = '#0.0'
         PLCTag = DB1_DBD68
-        Prefix = 'I_DC:  '
-        Sufix = '  A'
+        Sufix = ' '
         FormatDateTimeOptions = []
       end
-      object HMILabel2: THMILabel
-        AnchorSideLeft.Control = HMILabel1
-        AnchorSideTop.Control = HMILabel1
+      object HMI_Vdc: THMILabel
+        AnchorSideLeft.Control = Label_Vdc
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = HMI_Idc
         AnchorSideTop.Side = asrBottom
-        Left = 24
+        AnchorSideRight.Control = HMI_Speed
+        AnchorSideRight.Side = asrBottom
+        Left = 185
         Height = 30
         Hint = 'DB1_DBD72'
-        Top = 150
-        Width = 116
-        AutoSize = True
+        Top = 134
+        Width = 63
+        Alignment = taRightJustify
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 1
+        BorderSpacing.Top = 1
+        Color = clBlue
         Enabled = True
         Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
         Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -73,24 +116,33 @@ object Form1: TForm1
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        NumberFormat = '#0.0'
+        Transparent = False
+        NumberFormat = '#0'
         PLCTag = DB1_DBD72
-        Prefix = 'V_DC:  '
-        Sufix = '  V'
+        Sufix = ' '
         FormatDateTimeOptions = []
       end
-      object HMILabel3: THMILabel
-        AnchorSideLeft.Control = HMILabel1
-        AnchorSideTop.Control = HMILabel2
+      object HMI_Vout: THMILabel
+        AnchorSideLeft.Control = Label_Vout
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = HMI_Vdc
         AnchorSideTop.Side = asrBottom
-        Left = 24
+        AnchorSideRight.Control = HMI_Vdc
+        AnchorSideRight.Side = asrBottom
+        Left = 185
         Height = 30
         Hint = 'DB1_DBD76'
-        Top = 180
-        Width = 116
+        Top = 165
+        Width = 63
+        Alignment = taRightJustify
+        Anchors = [akTop, akLeft, akRight]
         AutoSize = True
+        BorderSpacing.Left = 1
+        BorderSpacing.Top = 1
+        Color = clBlue
         Enabled = True
         Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
         Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -99,24 +151,27 @@ object Form1: TForm1
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        NumberFormat = '#0.0'
+        Transparent = False
+        NumberFormat = '#0'
         PLCTag = DB1_DBD76
-        Prefix = 'V_Out:  '
-        Sufix = '  V'
+        Sufix = ' '
         FormatDateTimeOptions = []
       end
-      object HMILabel4: THMILabel
-        AnchorSideLeft.Control = HMILabel1
-        AnchorSideTop.Control = HMILabel3
-        AnchorSideTop.Side = asrBottom
-        Left = 24
+      object HMI_Speed: THMILabel
+        AnchorSideLeft.Control = Label_Speed
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label_Speed
+        Left = 185
         Height = 30
         Hint = 'DB1_DBD252'
-        Top = 210
-        Width = 128
-        AutoSize = True
+        Top = 72
+        Width = 63
+        Alignment = taRightJustify
+        BorderSpacing.Left = 1
+        Color = clBlue
         Enabled = True
         Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
         Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -125,24 +180,434 @@ object Form1: TForm1
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        NumberFormat = '#0.0'
+        Transparent = False
+        NumberFormat = '#0'
         PLCTag = DB1_DBD252
-        Prefix = 'LineSpeed:  '
-        Sufix = '  m/min'
+        Sufix = ' '
         FormatDateTimeOptions = []
       end
-      object HMILabel5: THMILabel
-        AnchorSideLeft.Control = HMILabel1
-        AnchorSideTop.Control = HMILabel4
+      object ConnectStep1: TShape
+        Left = 8
+        Height = 10
+        Top = 8
+        Width = 10
+      end
+      object ConnectStep2: TShape
+        AnchorSideLeft.Control = ConnectStep1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep1
+        AnchorSideBottom.Control = ConnectStep1
+        AnchorSideBottom.Side = asrBottom
+        Left = 19
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep3: TShape
+        AnchorSideLeft.Control = ConnectStep2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep2
+        AnchorSideBottom.Control = ConnectStep2
+        AnchorSideBottom.Side = asrBottom
+        Left = 30
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep4: TShape
+        AnchorSideLeft.Control = ConnectStep3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep3
+        AnchorSideBottom.Control = ConnectStep3
+        AnchorSideBottom.Side = asrBottom
+        Left = 41
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep5: TShape
+        AnchorSideLeft.Control = ConnectStep4
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep4
+        AnchorSideBottom.Control = ConnectStep4
+        AnchorSideBottom.Side = asrBottom
+        Left = 52
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep6: TShape
+        AnchorSideLeft.Control = ConnectStep5
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep5
+        AnchorSideBottom.Control = ConnectStep5
+        AnchorSideBottom.Side = asrBottom
+        Left = 63
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep7: TShape
+        AnchorSideLeft.Control = ConnectStep6
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep6
+        AnchorSideBottom.Control = ConnectStep6
+        AnchorSideBottom.Side = asrBottom
+        Left = 74
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep8: TShape
+        AnchorSideLeft.Control = ConnectStep7
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep7
+        AnchorSideBottom.Control = ConnectStep7
+        AnchorSideBottom.Side = asrBottom
+        Left = 85
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep9: TShape
+        AnchorSideLeft.Control = ConnectStep8
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep8
+        AnchorSideBottom.Control = ConnectStep8
+        AnchorSideBottom.Side = asrBottom
+        Left = 96
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object ConnectStep10: TShape
+        AnchorSideLeft.Control = ConnectStep9
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ConnectStep9
+        AnchorSideBottom.Control = ConnectStep9
+        AnchorSideBottom.Side = asrBottom
+        Left = 107
+        Height = 10
+        Top = 8
+        Width = 10
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 1
+      end
+      object Label_Speed: TLabel
+        Left = 16
+        Height = 30
+        Top = 72
+        Width = 168
+        AutoSize = False
+        Caption = ' Speed [m/min]'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object Label_PwrOut: TLabel
+        Left = 280
+        Height = 30
+        Top = 72
+        Width = 160
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'PwrOut'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object Label_Idc: TLabel
+        AnchorSideLeft.Control = Label_Speed
+        AnchorSideTop.Control = Label_Speed
         AnchorSideTop.Side = asrBottom
-        Left = 24
+        Left = 16
+        Height = 30
+        Top = 103
+        Width = 168
+        AutoSize = False
+        BorderSpacing.Top = 1
+        Caption = ' Idc [A]'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object Label_Vdc: TLabel
+        AnchorSideLeft.Control = Label_Idc
+        AnchorSideTop.Control = Label_Idc
+        AnchorSideTop.Side = asrBottom
+        Left = 16
+        Height = 30
+        Top = 134
+        Width = 168
+        AutoSize = False
+        BorderSpacing.Top = 1
+        Caption = ' Vdc [V]'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object Label_Vout: TLabel
+        AnchorSideLeft.Control = Label_Vdc
+        AnchorSideTop.Control = Label_Vdc
+        AnchorSideTop.Side = asrBottom
+        Left = 16
+        Height = 30
+        Top = 165
+        Width = 168
+        AutoSize = False
+        BorderSpacing.Top = 1
+        Caption = ' Vout [rms]'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object ProgressBar_PwrOut: TProgressBar
+        AnchorSideLeft.Control = ECRuler3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = HMI_PwrOut
+        AnchorSideRight.Side = asrBottom
+        Left = 332
+        Height = 302
+        Top = 139
+        Width = 108
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 6
+        Max = 65000
+        Orientation = pbVertical
+        TabOrder = 0
+        BarShowText = True
+      end
+      object Label1: TLabel
+        Left = 8
+        Height = 25
+        Top = 40
+        Width = 121
+        Caption = 'Operat. Value'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 272
+        Height = 25
+        Top = 40
+        Width = 135
+        Caption = 'PWR.REG.MAN'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label_PL: TLabel
+        Left = 464
+        Height = 30
+        Top = 72
+        Width = 56
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'PL'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object Label_ACT: TLabel
+        Left = 576
+        Height = 30
+        Top = 72
+        Width = 56
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'ACT'
+        Color = clAqua
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = 30
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object ProgressBar_PL: TProgressBar
+        AnchorSideLeft.Control = Label_PL
+        AnchorSideTop.Control = Label_PL
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Label_PL
+        AnchorSideRight.Side = asrBottom
+        Left = 464
+        Height = 337
+        Top = 103
+        Width = 56
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        Orientation = pbVertical
+        TabOrder = 1
+      end
+      object ProgressBar_ACT: TProgressBar
+        AnchorSideLeft.Control = Label_ACT
+        AnchorSideTop.Control = Label_ACT
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Label_ACT
+        AnchorSideRight.Side = asrBottom
+        Left = 576
+        Height = 337
+        Top = 103
+        Width = 56
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        Orientation = pbVertical
+        TabOrder = 2
+      end
+      object Label3: TLabel
+        Left = 456
+        Height = 25
+        Top = 40
+        Width = 136
+        Caption = 'AUT.SPEC.PWR'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object ECRuler2: TECRuler
+        Left = 536
+        Height = 346
+        Hint = '-641039795'
+        Top = 99
+        Width = 42
+        IndentBottomRight = 5
+        IndentTopLeft = 5
+        Orientation = eooVertical
+        Reversed = True
+        Scale.Max = 100
+        Scale.TickLongValue = 25
+        Scale.TickMiddleValue = 5
+        Scale.TickShortValue = 1
+        ScaleFontOptions.FontSize = 7
+        ScalePos = ebpBottomRight
+        Style = eosThemedPanel
+        Transparent = True
+      end
+      object ECRuler1: TECRuler
+        Left = 520
+        Height = 346
+        Hint = '-641039795'
+        Top = 99
+        Width = 42
+        IndentBottomRight = 5
+        IndentTopLeft = 5
+        Orientation = eooVertical
+        Reversed = True
+        Scale.Max = 100
+        Scale.TickLongValue = 25
+        Scale.TickMiddleValue = 5
+        Scale.TickShortValue = 1
+        ScaleFontOptions.FontSize = 7
+        Style = eosThemedPanel
+        Transparent = True
+      end
+      object ECRuler3: TECRuler
+        AnchorSideLeft.Control = HMI_PwrOut
+        AnchorSideTop.Side = asrBottom
+        Left = 280
+        Height = 313
+        Hint = '-641039795'
+        Top = 133
+        Width = 52
+        IndentBottomRight = 5
+        IndentTopLeft = 5
+        Orientation = eooVertical
+        Reversed = True
+        Scale.Max = 65000
+        Scale.TickLongValue = 5000
+        Scale.TickMiddleValue = 5
+        Scale.TickShortValue = 1
+        ScaleFontOptions.FontSize = 7
+        ScalePos = ebpBottomRight
+        Style = eosThemedPanel
+        Transparent = True
+      end
+      object HMI_PwrOut: THMILabel
+        AnchorSideLeft.Control = Label_PwrOut
+        AnchorSideTop.Control = Label_PwrOut
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Label_PwrOut
+        AnchorSideRight.Side = asrBottom
+        Left = 280
         Height = 30
         Hint = 'DB1_DBD258'
-        Top = 240
-        Width = 128
-        AutoSize = True
+        Top = 103
+        Width = 160
+        Alignment = taCenter
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 1
+        Color = clBlue
         Enabled = True
         Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
         Font.Height = -21
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -151,11 +616,70 @@ object Form1: TForm1
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        NumberFormat = '#0.0'
+        Transparent = False
+        NumberFormat = '#0'
         PLCTag = DB1_DBD258
-        Prefix = 'Power_Out:  '
-        Sufix = '  W'
+        Sufix = 'W'
         FormatDateTimeOptions = []
+      end
+      object Shape9: TShape
+        Left = 24
+        Height = 73
+        Top = 280
+        Width = 216
+        Brush.Color = clBlue
+        Pen.Color = clNone
+      end
+      object HMILabel1: THMILabel
+        AnchorSideLeft.Control = Shape9
+        AnchorSideRight.Control = Shape9
+        AnchorSideRight.Side = asrBottom
+        Left = 24
+        Height = 30
+        Top = 296
+        Width = 216
+        Alignment = taCenter
+        Anchors = [akTop, akLeft, akRight]
+        Enabled = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -27
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        NumberFormat = '#0.0'
+        PLCTag = DB1_DBD48
+        FormatDateTimeOptions = []
+      end
+      object Label4: TLabel
+        Left = 8
+        Height = 25
+        Top = 216
+        Width = 125
+        Caption = 'POWER LEVEL'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 64
+        Height = 25
+        Top = 248
+        Width = 131
+        Caption = 'PL [Wmin/mq]'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
       end
     end
     object TabSheet2: TTabSheet
@@ -555,15 +1079,6 @@ object Form1: TForm1
     Left = 40
     Top = 48
   end
-  object ISOTCPDriver1: TISOTCPDriver
-    CommunicationPort = TCP_UDPPort1
-    ForcePDUSize = pdu240
-    ConnectionWay = ISOTCP
-    PLCSlot = 2
-    ReadOnly = False
-    Left = 80
-    Top = 48
-  end
   object Timer1: TTimer
     OnTimer = Timer1Timer
     Left = 248
@@ -651,8 +1166,8 @@ object Form1: TForm1
   object DB1_68to76: TPLCBlock
     TagGUID = '{D989AC53-6B59-4F5E-9E1A-897A0EFE43BA}'
     PLCRack = 0
-    PLCSlot = 2
-    PLCStation = 2
+    PLCSlot = 1
+    PLCStation = 1
     MemFile_DB = 1
     MemAddress = 68
     MemSubElement = 0
@@ -694,8 +1209,8 @@ object Form1: TForm1
   object TPLCBlock
     TagGUID = '{CF81CD15-6EC6-46CD-8463-A7118D041C0B}'
     PLCRack = 0
-    PLCSlot = 2
-    PLCStation = 2
+    PLCSlot = 1
+    PLCStation = 1
     MemFile_DB = 0
     MemAddress = 0
     MemSubElement = 0
@@ -708,8 +1223,8 @@ object Form1: TForm1
   object DB1_252: TPLCBlock
     TagGUID = '{4324B880-CCEF-4A10-AF19-96381A9708E2}'
     PLCRack = 0
-    PLCSlot = 2
-    PLCStation = 2
+    PLCSlot = 1
+    PLCStation = 1
     MemFile_DB = 1
     MemAddress = 252
     MemSubElement = 0
@@ -735,8 +1250,8 @@ object Form1: TForm1
   object DB1_258: TPLCBlock
     TagGUID = '{874E154C-FA2D-4B6B-B063-5CF7B59DEB07}'
     PLCRack = 0
-    PLCSlot = 2
-    PLCStation = 2
+    PLCSlot = 1
+    PLCStation = 1
     MemFile_DB = 1
     MemAddress = 258
     MemSubElement = 0
@@ -875,5 +1390,174 @@ object Form1: TForm1
         OnClick = Memo01IpconfigAllClick
       end
     end
+  end
+  object Flags_From_MB0: TPLCBlock
+    TagGUID = '{A901B699-991A-4987-B9A4-4B11D091AED9}'
+    PLCRack = 0
+    PLCSlot = 1
+    PLCStation = 1
+    MemFile_DB = 0
+    MemAddress = 0
+    MemSubElement = 0
+    MemReadFunction = 3
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 100
+    LongAddress = ''
+    Size = 1
+    TagType = pttByte
+    Top = 48
+  end
+  object MB0: TPLCBlockElement
+    TagGUID = '{A1F7205E-5E7C-4EEE-AB85-228755F8B816}'
+    PLCBlock = Flags_From_MB0
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit0: TTagBit
+    TagGUID = '{C49E2026-B419-4398-BD5F-0289B4FEC001}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 0
+    EndBit = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit1: TTagBit
+    TagGUID = '{FC621DD2-6AE1-4FC5-B228-924DA650414B}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 1
+    EndBit = 1
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit2: TTagBit
+    TagGUID = '{E750A6BF-8CAB-45B5-9459-CAD889C2858C}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 2
+    EndBit = 2
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit3: TTagBit
+    TagGUID = '{12DF44BD-0E6D-4C53-A0BD-2A57DBB9D933}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 3
+    EndBit = 3
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit4: TTagBit
+    TagGUID = '{9351F00E-B68D-454A-A405-C88A396B206E}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 4
+    EndBit = 4
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit5: TTagBit
+    TagGUID = '{A571E075-D063-4B52-B5BE-41562146FBC9}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 5
+    EndBit = 5
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit6: TTagBit
+    TagGUID = '{031B2D12-73B7-4DC8-8E00-9CAC70915E76}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 6
+    EndBit = 6
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object MB0_bit7: TTagBit
+    TagGUID = '{F94A495B-5C8B-4328-9462-CBEBE6F3B55F}'
+    PLCTag = MB0
+    UseRawValue = False
+    StartBit = 7
+    EndBit = 7
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object DB1_48: TPLCBlock
+    TagGUID = '{C3C4A9E3-98C6-49DD-847D-72410109C0B2}'
+    PLCRack = 0
+    PLCSlot = 1
+    PLCStation = 1
+    MemFile_DB = 1
+    MemAddress = 48
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 500
+    LongAddress = ''
+    Size = 1
+    TagType = pttFloat
+    SwapBytes = True
+    SwapWords = True
+    Top = 48
+  end
+  object DB1_DBD48: TPLCBlockElement
+    TagGUID = '{B429D64E-E226-4DA0-B1EA-19157156907A}'
+    PLCBlock = DB1_48
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object DB1_278: TPLCBlock
+    TagGUID = '{F968B5F2-EB3A-4E12-A745-0148D8C80746}'
+    PLCRack = 0
+    PLCSlot = 1
+    PLCStation = 1
+    MemFile_DB = 1
+    MemAddress = 278
+    MemSubElement = 0
+    MemReadFunction = 4
+    MemWriteFunction = 0
+    ProtocolDriver = ISOTCPDriver1
+    UpdateTime = 500
+    LongAddress = ''
+    Size = 1
+    TagType = pttFloat
+    SwapBytes = True
+    SwapWords = True
+    Top = 48
+  end
+  object DB1_DBD278: TPLCBlockElement
+    TagGUID = '{C227ED6A-A298-4632-875C-82379311A901}'
+    PLCBlock = DB1_278
+    Index = 0
+    EnableMaxValue = False
+    EnableMinValue = False
+    Top = 48
+  end
+  object ISOTCPDriver1: TISOTCPDriver
+    CommunicationPort = TCP_UDPPort1
+    ForcePDUSize = pduAuto
+    ConnectionWay = ISOTCP
+    PLCSlot = 1
+    PLCStation = 1
+    ReadOnly = True
+    Left = 96
+    Top = 48
   end
 end
