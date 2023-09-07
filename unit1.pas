@@ -7,15 +7,18 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ComCtrls, uCmdBox, TAGraph, TASources, TATransformations, tcp_udpport,
-  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel,
-  HMITrackBar, hmi_polyline, TASeries, TAChartUtils, LazUTF8, process,
-  JwaWinBase, windows, AsyncProcess, LCLType, ECRuler, WinSock;
+  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel, jwawindows, JWAIPTYPES,
+   hmi_polyline, TASeries, TAChartUtils, LazUTF8, process,
+   windows, AsyncProcess, LCLType, ECRuler, WinSock, JwaIpHlpAPI, JwaIpRtrMib;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    Button3: TButton;
+    Button6: TButton;
+    Button7: TButton;
     ButtonComputerName: TButton;
     ButtonCurrentActToFile: TButton;
     ButtonCurrentActual: TButton;
@@ -250,6 +253,9 @@ type
     Timer2: TTimer;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
+    procedure Button3Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
     procedure ButtonComputerNameClick(Sender: TObject);
     procedure ButtonCurrentActToFileClick(Sender: TObject);
     procedure ButtonCurrentActualClick(Sender: TObject);
@@ -824,37 +830,62 @@ begin
 end;
 
 procedure TForm1.ButtonGetIPAddressClick(Sender: TObject);
-const
-CFormatIPMask = '%d.%d.%d.%d';
 var
- //SL : TStringList;
-  VWSAData: TWSAData;
-  VName: string;
-  VHostEnt: PHostEnt;
-  Result_:string;
+  Ret: DWord;
+  Table: PMib_IPAddrTable;
+  TableSize: ULong;
+  i: Integer;
+  //Row: PMib_IPAddrRow;
+  Addr: IN_ADDR;
 begin
+  // We begin by assuming there's just one entry, so we allocate space
+  // for that one
+  TableSize := SizeOf(Table^);
+  GetMem(Table, TableSize);
+  try
+    // Request a list of IP addresses, unsorted
+    Ret := GetIpAddrTable(Table, TableSize, False);
+    case Ret of
+      No_Error: ; // No error. Continue at the end of the case statement
+      Error_Insufficient_Buffer:
+      begin
+        // Oops. Space for just one entry wasn't enough. Allocate more.
+        ReallocMem(Table, TableSize);
+        Ret := GetIpAddrTable(Table, TableSize, False);
+        if Ret <> No_Error then
+        begin
+          // Function expects signed value, but Ret is unsigned. Type
+          // cast to avoid range-check error, however unlikely.
+          RaiseLastOSError(Integer(Ret));
+        end;
+      end;
+    else
+      RaiseLastOSError(Integer(Ret));
+    end;
+  //writeln(Table.dwNumEntries, ' entries:');
 
-  {$IFDEF MSWINDOWS}
-  {$HINTS OFF}
-  WSAStartup(2, VWSAData);
-  {$HINTS ON}
-  SetLength(VName, 255);
-  GetHostName(PChar(VName), 255);
-  //Log('>> %s',[VName]);
-  SetLength(VName, StrLen(PChar(VName)));
-  VHostEnt := GetHostByName(PChar(VName));
-  Result_ := Format(CFormatIPMask, [Byte(VHostEnt^.h_addr^[0]), Byte(VHostEnt^.h_addr^[1]),Byte(VHostEnt^.h_addr^[2]), Byte(VHostEnt^.h_addr^[3])]);
-  Log('>> %s',[Result_]);
-  WSACleanup;
-  {$ENDIF}
+  if Table^.dwNumEntries > 0 then
+  begin
+    //Row := @Table^.Table[0];
+    //for i := 0 to Pred(Table^.dwNumEntries) do
+    //begin
+    //  //writeln(inet_ntoa(in_addr(Row.dwAddr)));
+    //  log(inet_ntoa(in_addr(Row^.dwAddr)));
+    //  Inc(Row);
+    //end;
 
-  Log('>> %s',[getlocalip]);
+    for i := 0 to Table^.dwNumEntries-1 do
+    begin
+      // Convert ADDR to String and add to IPList
+      Addr.S_addr := Table^.table[i].dwAddr;
+      // Prevent implicit string conversion warning in D2009 by explicit cast to string
+      log(inet_ntoa(Addr));
+    end;
 
-  //SL := TStringList.Create;
-  //GetIpAddresses(SL);
-  //MsgBox(SL.Text, mbInformation, MB_OK);
-  //Log('>> %s',[SL.Text]);
-  //SL.Free;
+  end;
+  finally
+    FreeMem(Table);
+  end;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -929,6 +960,151 @@ begin
      GetComputerName(ComputerName, Size);
      Log('>> %s',[ComputerName]);
 end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  Ret: DWord;
+  Table: PMib_IPAddrTable;
+  TableSize: ULong;
+  i: Integer;
+  Row: PMib_IPAddrRow;
+  Addr: IN_ADDR;
+begin
+  // We begin by assuming there's just one entry, so we allocate space
+  // for that one
+  TableSize := SizeOf(Table^);
+  GetMem(Table, TableSize);
+  try
+    // Request a list of IP addresses, unsorted
+    Ret := GetIpAddrTable(Table, TableSize, False);
+    case Ret of
+      No_Error: ; // No error. Continue at the end of the case statement
+      Error_Insufficient_Buffer:
+      begin
+        // Oops. Space for just one entry wasn't enough. Allocate more.
+        ReallocMem(Table, TableSize);
+        Ret := GetIpAddrTable(Table, TableSize, False);
+        if Ret <> No_Error then
+        begin
+          // Function expects signed value, but Ret is unsigned. Type
+          // cast to avoid range-check error, however unlikely.
+          RaiseLastOSError(Integer(Ret));
+        end;
+      end;
+    else
+      RaiseLastOSError(Integer(Ret));
+    end;
+  //writeln(Table.dwNumEntries, ' entries:');
+
+  if Table^.dwNumEntries > 0 then
+  begin
+    Row := @Table^.Table[0];
+    for i := 0 to Pred(Table^.dwNumEntries) do
+    begin
+      //writeln(inet_ntoa(in_addr(Row.dwAddr)));
+      log(inet_ntoa(in_addr(Row^.dwAddr)));
+      Inc(Row);
+    end;
+
+    for i := 0 to Table^.dwNumEntries-1 do
+    begin
+      // Convert ADDR to String and add to IPList
+      Addr.S_addr := Table^.table[i].dwAddr;
+      // Prevent implicit string conversion warning in D2009 by explicit cast to string
+      log(inet_ntoa(Addr));
+    end;
+  end;
+  finally
+    FreeMem(Table);
+  end;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+const
+CFormatIPMask = '%d.%d.%d.%d';
+var
+ //SL : TStringList;
+  VWSAData: TWSAData;
+  VName: string;
+  VHostEnt: PHostEnt;
+  Result_:string;
+begin
+
+  {$IFDEF MSWINDOWS}
+  {$HINTS OFF}
+  WSAStartup(2, VWSAData);
+  {$HINTS ON}
+  SetLength(VName, 255);
+  GetHostName(PChar(VName), 255);
+  //Log('>> %s',[VName]);
+  SetLength(VName, StrLen(PChar(VName)));
+  VHostEnt := GetHostByName(PChar(VName));
+  Result_ := Format(CFormatIPMask, [Byte(VHostEnt^.h_addr^[0]), Byte(VHostEnt^.h_addr^[1]),Byte(VHostEnt^.h_addr^[2]), Byte(VHostEnt^.h_addr^[3])]);
+  Log('>> %s',[Result_]);
+  WSACleanup;
+  {$ENDIF}
+
+  Log('>> %s',[getlocalip]);
+
+  //SL := TStringList.Create;
+  //GetIpAddresses(SL);
+  //MsgBox(SL.Text, mbInformation, MB_OK);
+  //Log('>> %s',[SL.Text]);
+  //SL.Free;
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+var
+  pAdapterInfo: PIP_ADAPTER_INFO;
+  AdapterInfo: IP_ADAPTER_INFO;
+  BufLen: DWORD;
+  Status: DWORD;
+  strMAC: String;
+  i: Integer;
+begin
+  BufLen:= sizeof(AdapterInfo);
+  pAdapterInfo:= @AdapterInfo;
+  Status:= GetAdaptersInfo(nil, BufLen);
+  pAdapterInfo:= AllocMem(BufLen);
+  try
+    Status:= GetAdaptersInfo(pAdapterInfo, BufLen);
+    if (Status <> ERROR_SUCCESS) then
+    begin
+      case Status of
+        ERROR_NOT_SUPPORTED: Memo1.Lines.Add('GetAdaptersInfo is not supported by the operating ' +
+          'system running on the local computer.');
+        ERROR_NO_DATA: Memo1.Lines.Add('No network adapter on the local computer.');
+      else
+        Memo1.Lines.Add('GetAdaptersInfo failed with error #' + IntToStr(Status));
+      end;
+      Dispose(pAdapterInfo);
+      exit;
+    end;
+
+    while (pAdapterInfo <> nil) do
+    begin
+      memo1.Lines.Add('----------------------------------------------');
+      memo1.Lines.Add('Description: ' + pAdapterInfo^.Description);
+      memo1.Lines.Add('Name: ' + pAdapterInfo^.AdapterName);
+      strMAC := '';
+      for i := 0 to pAdapterInfo^.AddressLength - 1 do
+         strMAC := strMAC + '-' + IntToHex(pAdapterInfo^.Address[i], 2);
+      memo1.Lines.Add('MAC address: ' + Copy(strMAC, 2, Length(strMAC) - 1));
+      memo1.Lines.Add('IP address: ' + pAdapterInfo^.IpAddressList.IpAddress.S);
+      memo1.Lines.Add('IP subnet mask: ' + pAdapterInfo^.IpAddressList.IpMask.S);
+      memo1.Lines.Add('Gateway: ' + pAdapterInfo^.GatewayList.IpAddress.S);
+      memo1.Lines.Add('DHCP enabled: ' + IntTOStr(pAdapterInfo^.DhcpEnabled));
+      memo1.Lines.Add('DHCP: ' + pAdapterInfo^.DhcpServer.IpAddress.S);
+      memo1.Lines.Add('Have WINS: ' + BoolToStr(pAdapterInfo^.HaveWins,True));
+      memo1.Lines.Add('Primary WINS: ' + pAdapterInfo^.PrimaryWinsServer.IpAddress.S);
+      memo1.Lines.Add('Secondary WINS: ' + pAdapterInfo^.SecondaryWinsServer.IpAddress.S);
+      pAdapterInfo:= pAdapterInfo^.Next;
+    end;
+  finally
+    Dispose(pAdapterInfo);
+  end;
+end;
+
 
 procedure TForm1.ButtonCurrentActToFileClick(Sender: TObject);
 var
