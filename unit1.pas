@@ -7,20 +7,23 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ComCtrls, uCmdBox, TAGraph, TASources, TATransformations, tcp_udpport,
-  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel, HMIProgressBar,
-  HMITrackBar, hmi_polyline, TASeries, TAChartUtils, Types, LazUTF8, process,
-  JwaWinBase, windows, AsyncProcess, LCLType, ECRuler;
+  ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel,
+  HMITrackBar, hmi_polyline, TASeries, TAChartUtils, LazUTF8, process,
+  JwaWinBase, windows, AsyncProcess, LCLType, ECRuler, WinSock;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    Button10: TButton;
+    Button11: TButton;
     Button4: TButton;
     Button5: TButton;
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
+    Button9: TButton;
     DB1_22: TPLCBlock;
     DB1_26: TPLCBlock;
     DB1_30: TPLCBlock;
@@ -242,6 +245,8 @@ type
     Timer2: TTimer;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
+    procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -250,6 +255,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
     procedure Chart1Click(Sender: TObject);
     procedure Chart1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -289,6 +295,7 @@ type
     procedure V_DC_CheckBoxEditingDone(Sender: TObject);
     procedure V_Out_CheckBoxEditingDone(Sender: TObject);
   private
+    function getlocalip:string;
     function ReadOutput(const aproc : TAsyncProcess) : string;
     procedure Log(const s : string);
     procedure Log(Const Fmt : String; const Args : Array of const);
@@ -313,10 +320,77 @@ implementation
 
 uses LCLProc;
 
-
+//function GetIpAddrTable( pIpAddrTable: Array of Byte; var pdwSize: Cardinal; bOrder: WordBool ): DWORD; external 'GetIpAddrTable@IpHlpApi.dll stdcall';
+//function GetIpAddrTable( pIpAddrTable: Array of Byte; var pdwSize: Cardinal; bOrder: WordBool ): DWORD; stdcall; external 'IPHLPAPI.DLL';
+//function GetIfTable: DWORD; stdcall; external 'IPHLPAPI.DLL';
+//function GetIpAddrTable: DWORD; stdcall; external 'IPHLPAPI.DLL';
 {$R *.lfm}
 
 { TForm1 }
+//procedure GetIpAddresses(Addresses : TStringList);
+//var
+// Size : Cardinal;
+// Buffer : Array of Byte;
+// IpAddr : String;
+// AddrCount : Integer;
+// I, J : Integer;
+//begin
+//  { Find Size }
+//  if GetIpAddrTable(Buffer,Size,False) = ERROR_INSUFFICIENT_BUFFER then
+//  begin
+//     { Allocate Buffer with large enough size }
+//     SetLength(Buffer,Size);
+//     { Get List of IP Addresses into Buffer }
+//     if GetIpAddrTable(Buffer,Size,True) = 0 then
+//     begin
+//       { Find out how many addresses will be returned. }
+//       AddrCount := (Buffer[1] * 256) + Buffer[0];
+//       { Loop through addresses. }
+//       For I := 0 to AddrCount - 1 do
+//       begin
+//         IpAddr := '';
+//         { Loop through each byte of the address }
+//         For J := 0 to 3 do
+//         begin
+//           if J > 0 then
+//             IpAddr := IpAddr + '.';
+//           { Navigate through record structure to find correct byte of Addr }
+//           IpAddr := IpAddr + IntToStr(Buffer[I*24+J+4]);
+//         end;
+//         Addresses.Add(IpAddr);
+//       end;
+//     end;
+//  end;
+//end;
+
+function TForm1.getlocalip:string;
+type
+  TaPInAddr = array [0..10] of PInAddr;
+  PaPInAddr = ^TaPInAddr;
+var
+  phe : PHostEnt;
+  pptr : PaPInAddr;
+  buffer : array [0..63] of char;
+  i : integer;
+  GInitData : TWSADATA;
+begin
+  WSAStartup($101, GInitData);
+  Result:='';
+  GetHostName(buffer, sizeof(buffer));
+  phe:=gethostbyname(buffer);
+  if phe = nil then
+  begin
+    Exit;
+  end;
+  pptr:= PaPInAddr(phe^.h_addr_list);
+  i:=0;
+  while not (pptr^[i] = nil) do
+  begin
+    result:=result+'['+StrPas(inet_ntoa(pptr^[i]^))+']';
+    Inc(i);
+  end;
+  WSACleanup;
+end;
 
 function TForm1.ReadOutput(const aproc : TAsyncProcess) : string;
 var tempStrings : TStringList;
@@ -732,6 +806,40 @@ begin
   OutputStream.Free;
 end;
 
+procedure TForm1.Button9Click(Sender: TObject);
+const
+CFormatIPMask = '%d.%d.%d.%d';
+var
+ //SL : TStringList;
+  VWSAData: TWSAData;
+  VName: string;
+  VHostEnt: PHostEnt;
+  Result_:string;
+begin
+
+  {$IFDEF MSWINDOWS}
+  {$HINTS OFF}
+  WSAStartup(2, VWSAData);
+  {$HINTS ON}
+  SetLength(VName, 255);
+  GetHostName(PChar(VName), 255);
+  //Log('>> %s',[VName]);
+  SetLength(VName, StrLen(PChar(VName)));
+  VHostEnt := GetHostByName(PChar(VName));
+  Result_ := Format(CFormatIPMask, [Byte(VHostEnt^.h_addr^[0]), Byte(VHostEnt^.h_addr^[1]),Byte(VHostEnt^.h_addr^[2]), Byte(VHostEnt^.h_addr^[3])]);
+  Log('>> %s',[Result_]);
+  WSACleanup;
+  {$ENDIF}
+
+  Log('>> %s',[getlocalip]);
+
+  //SL := TStringList.Create;
+  //GetIpAddresses(SL);
+  //MsgBox(SL.Text, mbInformation, MB_OK);
+  //Log('>> %s',[SL.Text]);
+  //SL.Free;
+end;
+
 procedure TForm1.Button1Click(Sender: TObject);
 const
   READ_BYTES = 2048;
@@ -793,6 +901,47 @@ begin
   MemStr.Free;
   CmdProcess.Free;
   //SetCmdBoxPrompt(FPath+'>');
+end;
+
+procedure TForm1.Button10Click(Sender: TObject);
+var
+ComputerName: Array [0 .. 256] of char;
+Size: DWORD;
+begin
+     Size := 256;
+     GetComputerName(ComputerName, Size);
+     Log('>> %s',[ComputerName]);
+end;
+
+procedure TForm1.Button11Click(Sender: TObject);
+var
+  SS_Name:string;
+  fileout : TextFile;
+begin
+  SS_Name:='Log'+'\'+'CurrentActFile'+'.ini';
+  CheckDirectory('Log',Memo1);
+  try
+    AssignFile(fileout, SS_Name);
+  except
+    on E: EInOutError do
+    begin
+      showmessage('AssignFile: '+E.ClassName+'/'+ E.Message+'/'+IntToStr(E.ErrorCode));
+      exit;
+    end;
+  end;
+
+  rewrite(fileout);
+  writeln(fileout,'Date:'+FormatDateTime('DD/MM/YYYY',Now));
+  writeln(fileout,'Time:'+FormatDateTime('hh:nn:ss',Now));
+  writeln(fileout,'I_DC:'+FormatFloat('####0.00',DB1_DBD68.Value));
+  writeln(fileout,'V_DC:'+FormatFloat('####0.00',DB1_DBD72.Value));
+  writeln(fileout,'V_Out:'+FormatFloat('####0.00',DB1_DBD76.Value));
+  writeln(fileout,'LineSpeed:'+FormatFloat('####0.00',DB1_DBD252.Value));
+  writeln(fileout,'Power_Out:'+FormatFloat('####0.00',DB1_DBD258.Value));
+  writeln(fileout,'PowerSetSpecPower:'+FormatFloat('####0.00',DB1_DBD48.Value));
+  writeln(fileout,'SpecificPower:'+FormatFloat('####0.00',DB1_DBD278.Value));
+  CloseFile(fileout);
+
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -1159,7 +1308,7 @@ begin
      on E: EInOutError do
      try
        rewrite (fileout);
-       writeln(fileout, 'Date,Time,I_DC,V_DC,LineSpeed,Power_Out,V_Out,PowerSetSpecPower,SpecificPower');
+       writeln(fileout, 'Date,Time,I_DC,V_DC,V_Out,LineSpeed,Power_Out,PowerSetSpecPower,SpecificPower');
      except
        //on E: EInOutError do
        //showmessage('Append: '+E.ClassName+'/'+ E.Message+'/'+IntToStr(E.ErrorCode));
@@ -1173,7 +1322,9 @@ begin
      end;
      if TCP_UDPPort1.Active then
      begin
-       //writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB3_DBD12.Value)+','+FormatFloat('####0.00',DB3_DBD30.Value)+','+FormatFloat('####0.00',DB24_DBD62.Value)+','+FloatToStr(Q1_7.Value)+','+FloatToStr(I7_0.Value));
+       //FormatFloat('####0.00',DB3_DBD12.Value)//FloatToStr(Q1_7.Value)
+       //Date,                             Time,                           I_DC,                                    V_DC,                                    V_Out,                                   LineSpeed,                                Power_Out,                                PowerSetSpecPower,                       SpecificPower
+       //FormatDateTime('DD/MM/YYYY',Now), FormatDateTime('hh:nn:ss',Now), FormatFloat('####0.00',DB1_DBD68.Value), FormatFloat('####0.00',DB1_DBD72.Value), FormatFloat('####0.00',DB1_DBD76.Value), FormatFloat('####0.00',DB1_DBD252.Value), FormatFloat('####0.00',DB1_DBD258.Value), FormatFloat('####0.00',DB1_DBD48.Value), FormatFloat('####0.00',DB1_DBD278.Value)
        writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+','+FormatFloat('####0.00',DB1_DBD68.Value)+','+FormatFloat('####0.00',DB1_DBD72.Value)+','+FormatFloat('####0.00',DB1_DBD76.Value)+','+FormatFloat('####0.00',DB1_DBD252.Value)+','+FormatFloat('####0.00',DB1_DBD258.Value)+','+FormatFloat('####0.00',DB1_DBD48.Value)+','+FormatFloat('####0.00',DB1_DBD278.Value));
      end;
      CloseFile(fileout);
