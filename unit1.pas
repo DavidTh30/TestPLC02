@@ -8,8 +8,8 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ComCtrls, uCmdBox, TAGraph, TASources, TATransformations, tcp_udpport,
   ISOTCPDriver, PLCBlock, PLCBlockElement, TagBit, HMILabel, HMIProgressBar,
-  HMITrackBar, TASeries, TAChartUtils, Types, LazUTF8, process, JwaWinBase,
-  windows, AsyncProcess, LCLType, ECRuler;
+  HMITrackBar, hmi_polyline, TASeries, TAChartUtils, Types, LazUTF8, process,
+  JwaWinBase, windows, AsyncProcess, LCLType, ECRuler;
 
 type
 
@@ -21,6 +21,56 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
+    DB1_22: TPLCBlock;
+    DB1_26: TPLCBlock;
+    DB1_30: TPLCBlock;
+    DB1_34: TPLCBlock;
+    DB1_38: TPLCBlock;
+    DB1_DBB22: TPLCBlockElement;
+    DB1_DBB22_bit0: TTagBit;
+    DB1_DBB22_bit1: TTagBit;
+    DB1_DBB22_bit2: TTagBit;
+    DB1_DBB22_bit3: TTagBit;
+    DB1_DBB22_bit4: TTagBit;
+    DB1_DBB22_bit5: TTagBit;
+    DB1_DBB22_bit6: TTagBit;
+    DB1_DBB22_bit7: TTagBit;
+    DB1_DBB26: TPLCBlockElement;
+    DB1_DBB26_bit0: TTagBit;
+    DB1_DBB26_bit1: TTagBit;
+    DB1_DBB26_bit2: TTagBit;
+    DB1_DBB26_bit3: TTagBit;
+    DB1_DBB26_bit4: TTagBit;
+    DB1_DBB26_bit5: TTagBit;
+    DB1_DBB26_bit6: TTagBit;
+    DB1_DBB26_bit7: TTagBit;
+    DB1_DBB30: TPLCBlockElement;
+    DB1_DBB30_bit0: TTagBit;
+    DB1_DBB30_bit1: TTagBit;
+    DB1_DBB30_bit2: TTagBit;
+    DB1_DBB30_bit3: TTagBit;
+    DB1_DBB30_bit4: TTagBit;
+    DB1_DBB30_bit5: TTagBit;
+    DB1_DBB30_bit6: TTagBit;
+    DB1_DBB30_bit7: TTagBit;
+    DB1_DBB34: TPLCBlockElement;
+    DB1_DBB34_bit0: TTagBit;
+    DB1_DBB34_bit1: TTagBit;
+    DB1_DBB34_bit2: TTagBit;
+    DB1_DBB34_bit3: TTagBit;
+    DB1_DBB34_bit4: TTagBit;
+    DB1_DBB34_bit5: TTagBit;
+    DB1_DBB34_bit6: TTagBit;
+    DB1_DBB34_bit7: TTagBit;
+    DB1_DBB38: TPLCBlockElement;
+    DB1_DBB38_bit0: TTagBit;
+    DB1_DBB38_bit1: TTagBit;
+    DB1_DBB38_bit2: TTagBit;
+    DB1_DBB38_bit3: TTagBit;
+    DB1_DBB38_bit4: TTagBit;
+    DB1_DBB38_bit5: TTagBit;
+    DB1_DBB38_bit6: TTagBit;
+    DB1_DBB38_bit7: TTagBit;
     DB1_DBD278: TPLCBlockElement;
     DB1_DBD48: TPLCBlockElement;
     DB1_48: TPLCBlock;
@@ -47,12 +97,35 @@ type
     Connect: TMenuItem;
     Disconnect: TMenuItem;
     HMILabel1: THMILabel;
+    HMIPolyline1: THMIPolyline;
+    HMIPolyline2: THMIPolyline;
+    HMIPolyline3: THMIPolyline;
+    HMIPolyline4: THMIPolyline;
+    HMI_SpecificPowerAct: THMILabel;
+    Image_Info: TImage;
     ISOTCPDriver1: TISOTCPDriver;
     Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
+    Label_OperateValue: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label_PowerLevel: TLabel;
+    Label_PLset: TLabel;
+    Label_Alarms: TLabel;
+    Label_Warnings: TLabel;
+    Label_Emergency: TLabel;
+    Label_PowerAlarm: TLabel;
+    Label_OzoneSuction: TLabel;
+    Label_VccFault: TLabel;
+    Label_ThermalSwitch: TLabel;
+    Label_OverloadIdc: TLabel;
+    Label_HVDischarge: TLabel;
+    Label_InterlockCor: TLabel;
+    Label_LowSpeed: TLabel;
+    Label_StationOpen: TLabel;
+    Lable_SpecificPowerAct: TLabel;
     Label_Speed: TLabel;
     Label_PwrOut: TLabel;
     Label_Idc: TLabel;
@@ -91,11 +164,24 @@ type
     ProgressBar_PwrOut: TProgressBar;
     ProgressBar_PL: TProgressBar;
     ProgressBar_ACT: TProgressBar;
-    Shape10: TShape;
-    Shape6: TShape;
-    Shape7: TShape;
-    Shape8: TShape;
+    Shape_ThermalSwitch: TShape;
+    Shape_OverloadIdc: TShape;
+    Shape_HVDischarge: TShape;
+    Shape_InterlockCor: TShape;
+    Shape_LowSpeed: TShape;
+    Shape_StationOpen: TShape;
+    Shape_PowerAlarm: TShape;
+    Shape_Alarms: TShape;
+    Shape_Warnings: TShape;
+    Shape_Emergency: TShape;
+    Shape_OzoneSuction: TShape;
+    Shape_VccFault: TShape;
+    Shape_PowerLevel: TShape;
+    Shape_OperatValue: TShape;
+    Shape_PwrRegMan: TShape;
+    Shape_AutSpecPw: TShape;
     Shape9: TShape;
+    TabSheet4: TTabSheet;
     ToolButton2: TToolButton;
     V_DC_CheckBox: TCheckBox;
     LineSpeed_CheckBox: TCheckBox;
@@ -195,7 +281,7 @@ type
     procedure MenuItem4Click(Sender: TObject);
     procedure ChartZoomInMenuClick(Sender: TObject);
     procedure Power_Out_CheckBoxEditingDone(Sender: TObject);
-    procedure Shape10ChangeBounds(Sender: TObject);
+    procedure Shape_PowerLevelChangeBounds(Sender: TObject);
     procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure Timer1Timer(Sender: TObject);
@@ -1000,7 +1086,7 @@ begin
   Chart1LineSeries4.Active:=Power_Out_CheckBox.Checked;
 end;
 
-procedure TForm1.Shape10ChangeBounds(Sender: TObject);
+procedure TForm1.Shape_PowerLevelChangeBounds(Sender: TObject);
 begin
 
 end;
@@ -1186,9 +1272,20 @@ If (ListChartSource1.Count>240) and (Chart1.Tag = 0) then
     HMI_Vout.Visible:=false;
     HMI_PwrOut.Visible:=false;
     HMILabel1.Visible:=false;
+    HMI_SpecificPowerAct.Visible:=false;
     ProgressBar_PwrOut.Position:= round(0);
     ProgressBar_PL.Position:= round(0);
     ProgressBar_ACT.Position:= round(0);
+    Shape_Emergency.Visible:=false;
+    Shape_OzoneSuction.Visible:=false;
+    Shape_VccFault.Visible:=false;
+    Shape_ThermalSwitch.Visible:=false;
+    Shape_OverloadIdc.Visible:=false;
+    Shape_HVDischarge.Visible:=false;
+    Shape_InterlockCor.Visible:=false;
+    Shape_LowSpeed.Visible:=false;
+    Shape_StationOpen.Visible:=false;
+    Shape_PowerAlarm.Visible:=false;
   end;
   if TCP_UDPPort1.Active then
   begin
@@ -1198,9 +1295,42 @@ If (ListChartSource1.Count>240) and (Chart1.Tag = 0) then
     HMI_Vout.Visible:=true;
     HMI_PwrOut.Visible:=true;
     HMILabel1.Visible:=true;
+    HMI_SpecificPowerAct.Visible:=true;
     ProgressBar_PwrOut.Position:= round(DB1_DBD258.Value);
     ProgressBar_PL.Position:= round(DB1_DBD48.Value);
     ProgressBar_ACT.Position:= round(DB1_DBD278.Value);
+    Shape_Emergency.Visible:=true;
+    Shape_OzoneSuction.Visible:=true;
+    Shape_VccFault.Visible:=true;
+    Shape_ThermalSwitch.Visible:=true;
+    Shape_OverloadIdc.Visible:=true;
+    Shape_HVDischarge.Visible:=true;
+    Shape_InterlockCor.Visible:=true;
+    Shape_LowSpeed.Visible:=true;
+    Shape_StationOpen.Visible:=true;
+    Shape_PowerAlarm.Visible:=true;
+    if DB1_DBB30_bit1.Value>0 then Shape_Emergency.Brush.Color:=clRed;
+    if DB1_DBB30_bit1.Value=0 then Shape_Emergency.Brush.Color:=clWhite;
+    if DB1_DBB30_bit0.Value>0 then Shape_OzoneSuction.Brush.Color:=clRed;
+    if DB1_DBB30_bit0.Value=0 then Shape_OzoneSuction.Brush.Color:=clWhite;
+    if DB1_DBB26_bit2.Value>0 then Shape_VccFault.Brush.Color:=clRed;
+    if DB1_DBB26_bit2.Value=0 then Shape_VccFault.Brush.Color:=clWhite;
+    if DB1_DBB26_bit3.Value>0 then Shape_ThermalSwitch.Brush.Color:=clRed;
+    if DB1_DBB26_bit3.Value=0 then Shape_ThermalSwitch.Brush.Color:=clWhite;
+    if DB1_DBB34_bit0.Value>0 then Shape_OverloadIdc.Brush.Color:=clRed;
+    if DB1_DBB34_bit0.Value=0 then Shape_OverloadIdc.Brush.Color:=clWhite;
+    if DB1_DBB38_bit0.Value>0 then Shape_HVDischarge.Brush.Color:=clRed;
+    if DB1_DBB38_bit0.Value=0 then Shape_HVDischarge.Brush.Color:=clWhite;
+    if DB1_DBB38_bit1.Value>0 then Shape_InterlockCor.Brush.Color:=clRed;
+    if DB1_DBB38_bit1.Value=0 then Shape_InterlockCor.Brush.Color:=clWhite;
+
+    if DB1_DBB22_bit3.Value>0 then Shape_LowSpeed.Brush.Color:=clYellow;
+    if DB1_DBB22_bit3.Value=0 then Shape_LowSpeed.Brush.Color:=clWhite;
+    if DB1_DBB22_bit1.Value>0 then Shape_StationOpen.Brush.Color:=clYellow;
+    if DB1_DBB22_bit1.Value=0 then Shape_StationOpen.Brush.Color:=clWhite;
+    if DB1_DBB22_bit6.Value>0 then Shape_PowerAlarm.Brush.Color:=clYellow;
+    if DB1_DBB22_bit6.Value=0 then Shape_PowerAlarm.Brush.Color:=clWhite;
+
   end;
 
 end;
@@ -1273,7 +1403,7 @@ begin
     Old_CPU_Clock_counter:=CPU_Clock_counter;
   end;
   if (Old_CPU_Clock_counter=CPU_Clock_counter) and TCP_UDPPort1.Active then Error_CPU_Clock_counter:=Error_CPU_Clock_counter+1;
-  if Error_CPU_Clock_counter >= 50 then
+  if Error_CPU_Clock_counter >= 100 then
   begin
     Error_CPU_Clock_counter:=0;
     DisconnectClick(Sender);
