@@ -3,7 +3,7 @@ object Form1: TForm1
   Height = 572
   Top = 38
   Width = 885
-  Caption = 'PLC:10.10.10.40  Port:102  07/09/2023 17:32'
+  Caption = 'PLC:10.10.10.40  Port:102  07/09/2023 19:09'
   ClientHeight = 572
   ClientWidth = 885
   OnClose = FormClose
@@ -2470,7 +2470,7 @@ object Form1: TForm1
         Left = 544
         Height = 145
         Top = 16
-        Width = 260
+        Width = 192
         Visible = False
         CaretColor = clWhite
         CaretType = cartUser
@@ -2603,6 +2603,36 @@ object Form1: TForm1
         Caption = 'Current actual'
         OnClick = ButtonCurrentActualClick
         TabOrder = 14
+      end
+      object Button3: TButton
+        Left = 741
+        Height = 33
+        Top = 24
+        Width = 90
+        Caption = 'Get IP address'
+        OnClick = Button3Click
+        TabOrder = 15
+        Visible = False
+      end
+      object Button6: TButton
+        Left = 741
+        Height = 37
+        Top = 64
+        Width = 90
+        Caption = 'Get IP address'
+        OnClick = Button6Click
+        TabOrder = 16
+        Visible = False
+      end
+      object Button7: TButton
+        Left = 741
+        Height = 38
+        Top = 104
+        Width = 90
+        Caption = 'Get detail IP'
+        OnClick = Button7Click
+        TabOrder = 17
+        Visible = False
       end
     end
   end
