@@ -16,14 +16,15 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button10: TButton;
-    Button11: TButton;
+    ButtonComputerName: TButton;
+    ButtonCurrentActToFile: TButton;
+    ButtonCurrentActual: TButton;
     Button4: TButton;
     Button5: TButton;
-    Button6: TButton;
-    Button7: TButton;
-    Button8: TButton;
-    Button9: TButton;
+    ButtonPing: TButton;
+    ButtonIpconfig: TButton;
+    ButtonIpconfigAl: TButton;
+    ButtonGetIPAddress: TButton;
     DB1_22: TPLCBlock;
     DB1_26: TPLCBlock;
     DB1_30: TPLCBlock;
@@ -86,7 +87,7 @@ type
     FProcess: TAsyncProcess;
     Button1: TButton;
     Button2: TButton;
-    Button3: TButton;
+    ButtonSimulate: TButton;
     Chart1: TChart;
     Chart1LineSeries1: TLineSeries;
     Chart1LineSeries2: TLineSeries;
@@ -164,6 +165,10 @@ type
     ConnectStep2: TShape;
     ConnectStep3: TShape;
     ConnectStep4: TShape;
+    MenuComputerName: TMenuItem;
+    MenuCurrentActualToFile: TMenuItem;
+    MenuIPAddress: TMenuItem;
+    MenuItemCurrentActual: TMenuItem;
     ProgressBar_PwrOut: TProgressBar;
     ProgressBar_PL: TProgressBar;
     ProgressBar_ACT: TProgressBar;
@@ -245,17 +250,18 @@ type
     Timer2: TTimer;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
-    procedure Button10Click(Sender: TObject);
-    procedure Button11Click(Sender: TObject);
+    procedure ButtonComputerNameClick(Sender: TObject);
+    procedure ButtonCurrentActToFileClick(Sender: TObject);
+    procedure ButtonCurrentActualClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+    procedure ButtonSimulateClick(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
-    procedure Button6Click(Sender: TObject);
-    procedure Button7Click(Sender: TObject);
-    procedure Button8Click(Sender: TObject);
-    procedure Button9Click(Sender: TObject);
+    procedure ButtonPingClick(Sender: TObject);
+    procedure ButtonIpconfigClick(Sender: TObject);
+    procedure ButtonIpconfigAlClick(Sender: TObject);
+    procedure ButtonGetIPAddressClick(Sender: TObject);
     procedure Chart1Click(Sender: TObject);
     procedure Chart1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -283,9 +289,13 @@ type
     procedure Memo01PingClick(Sender: TObject);
     procedure Memo01SelectAllClick(Sender: TObject);
     procedure Memo1KeyPress(Sender: TObject; var Key: char);
+    procedure MenuComputerNameClick(Sender: TObject);
+    procedure MenuCurrentActualToFileClick(Sender: TObject);
+    procedure MenuIPAddressClick(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
     procedure ChartZoomInMenuClick(Sender: TObject);
+    procedure MenuItemCurrentActualClick(Sender: TObject);
     procedure Power_Out_CheckBoxEditingDone(Sender: TObject);
     procedure Shape_PowerLevelChangeBounds(Sender: TObject);
     procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -302,6 +312,7 @@ type
   public
     Function CheckFile(C_DNAME: string; C_FNAME: string; Debug_:TMemo):boolean;
     Function CheckDirectory(C_DNAME: string;Debug_:TMemo):boolean;
+    Function DoubleBooleanToStr(DoubleBoolean: double):string;
   end;
 
 var
@@ -483,8 +494,14 @@ begin
   end;
 
 end;
+Function TForm1.DoubleBooleanToStr(DoubleBoolean: double):string;
+begin
+  result:='False';
+  if DoubleBoolean<=0 then result:='False';
+  if DoubleBoolean>0 then result:='True';
+end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TForm1.ButtonSimulateClick(Sender: TObject);
 begin
   ChartSimulate:=not ChartSimulate;
 end;
@@ -611,7 +628,7 @@ begin
   OutputStream.Free;
 end;
 
-procedure TForm1.Button6Click(Sender: TObject);
+procedure TForm1.ButtonPingClick(Sender: TObject);
 const
   BUF_SIZE = 2048; // Buffer size for reading the output in chunks
 
@@ -676,7 +693,7 @@ begin
   OutputStream.Free;
 end;
 
-procedure TForm1.Button7Click(Sender: TObject);
+procedure TForm1.ButtonIpconfigClick(Sender: TObject);
 const
   BUF_SIZE = 2048; // Buffer size for reading the output in chunks
 
@@ -741,7 +758,7 @@ begin
   OutputStream.Free;
 end;
 
-procedure TForm1.Button8Click(Sender: TObject);
+procedure TForm1.ButtonIpconfigAlClick(Sender: TObject);
 const
   BUF_SIZE = 2048; // Buffer size for reading the output in chunks
 
@@ -806,7 +823,7 @@ begin
   OutputStream.Free;
 end;
 
-procedure TForm1.Button9Click(Sender: TObject);
+procedure TForm1.ButtonGetIPAddressClick(Sender: TObject);
 const
 CFormatIPMask = '%d.%d.%d.%d';
 var
@@ -903,7 +920,7 @@ begin
   //SetCmdBoxPrompt(FPath+'>');
 end;
 
-procedure TForm1.Button10Click(Sender: TObject);
+procedure TForm1.ButtonComputerNameClick(Sender: TObject);
 var
 ComputerName: Array [0 .. 256] of char;
 Size: DWORD;
@@ -913,7 +930,7 @@ begin
      Log('>> %s',[ComputerName]);
 end;
 
-procedure TForm1.Button11Click(Sender: TObject);
+procedure TForm1.ButtonCurrentActToFileClick(Sender: TObject);
 var
   SS_Name:string;
   fileout : TextFile;
@@ -933,15 +950,52 @@ begin
   rewrite(fileout);
   writeln(fileout,'Date:'+FormatDateTime('DD/MM/YYYY',Now));
   writeln(fileout,'Time:'+FormatDateTime('hh:nn:ss',Now));
-  writeln(fileout,'I_DC:'+FormatFloat('####0.00',DB1_DBD68.Value));
-  writeln(fileout,'V_DC:'+FormatFloat('####0.00',DB1_DBD72.Value));
-  writeln(fileout,'V_Out:'+FormatFloat('####0.00',DB1_DBD76.Value));
-  writeln(fileout,'LineSpeed:'+FormatFloat('####0.00',DB1_DBD252.Value));
-  writeln(fileout,'Power_Out:'+FormatFloat('####0.00',DB1_DBD258.Value));
-  writeln(fileout,'PowerSetSpecPower:'+FormatFloat('####0.00',DB1_DBD48.Value));
-  writeln(fileout,'SpecificPower:'+FormatFloat('####0.00',DB1_DBD278.Value));
+  writeln(fileout,'[DB1.DBD68] I_DC:'+FormatFloat('####0.00',DB1_DBD68.Value));
+  writeln(fileout,'[DB1.DBD72] V_DC:'+FormatFloat('####0.00',DB1_DBD72.Value));
+  writeln(fileout,'[DB1.DBD76] V_Out:'+FormatFloat('####0.00',DB1_DBD76.Value));
+  writeln(fileout,'[DB1.DBD252] LineSpeed:'+FormatFloat('####0.00',DB1_DBD252.Value));
+  writeln(fileout,'[DB1.DBD258] Power_Out:'+FormatFloat('####0.00',DB1_DBD258.Value));
+  writeln(fileout,'[DB1.DBD48] PowerSetSpecPower:'+FormatFloat('####0.00',DB1_DBD48.Value));
+  writeln(fileout,'[DB1.DBD278] SpecificPower:'+FormatFloat('####0.00',DB1_DBD278.Value));
+
+  writeln(fileout,'[DB1.DBB30_bit1] Emergency: '+DoubleBooleanToStr(DB1_DBB30_bit1.Value));
+  writeln(fileout,'[DB1.DBB30_bit0] Ozone suction: '+DoubleBooleanToStr(DB1_DBB30_bit0.Value));
+  writeln(fileout,'[DB1.DBB26_bit2] Vcc fault: '+DoubleBooleanToStr(DB1_DBB26_bit2.Value));
+  writeln(fileout,'[DB1.DBB26_bit3] Thermal switch: '+DoubleBooleanToStr(DB1_DBB26_bit3.Value));
+  writeln(fileout,'[DB1.DBB34_bit0] Overload Idc: '+DoubleBooleanToStr(DB1_DBB34_bit0.Value));
+  writeln(fileout,'[DB1.DBB38_bit0] H.V.discharge: '+DoubleBooleanToStr(DB1_DBB38_bit0.Value));
+  writeln(fileout,'[DB1.DBB38_bit1] Interlock Cor: '+DoubleBooleanToStr(DB1_DBB38_bit1.Value));
+  writeln(fileout,'[DB1.DBB22_bit3] Low speed: '+DoubleBooleanToStr(DB1_DBB22_bit3.Value));
+  writeln(fileout,'[DB1.DBB22_bit1] Station open: '+DoubleBooleanToStr(DB1_DBB22_bit1.Value));
+  writeln(fileout,'[DB1.DBB22_bit6] Power alarm: '+DoubleBooleanToStr(DB1_DBB22_bit6.Value));
+
   CloseFile(fileout);
 
+end;
+
+procedure TForm1.ButtonCurrentActualClick(Sender: TObject);
+begin
+  Log('-------------------------------------');
+  Log('Date: '+FormatDateTime('DD/MM/YYYY',Now));
+  Log('Time: '+FormatDateTime('hh:nn:ss',Now));
+  Log('[DB1.DBD68] I_DC: '+FormatFloat('####0.00',DB1_DBD68.Value));
+  Log('[DB1.DBD72] V_DC: '+FormatFloat('####0.00',DB1_DBD72.Value));
+  Log('[DB1.DBD76] V_Out: '+FormatFloat('####0.00',DB1_DBD76.Value));
+  Log('[DB1.DBD252] LineSpeed: '+FormatFloat('####0.00',DB1_DBD252.Value));
+  Log('[DB1.DBD258] Power_Out: '+FormatFloat('####0.00',DB1_DBD258.Value));
+  Log('[DB1.DBD48] PowerSetSpecPower: '+FormatFloat('####0.00',DB1_DBD48.Value));
+  Log('[DB1.DBD278] SpecificPower: '+FormatFloat('####0.00',DB1_DBD278.Value));
+
+  Log('[DB1.DBB30_bit1] Emergency: '+DoubleBooleanToStr(DB1_DBB30_bit1.Value));
+  Log('[DB1.DBB30_bit0] Ozone suction: '+DoubleBooleanToStr(DB1_DBB30_bit0.Value));
+  Log('[DB1.DBB26_bit2] Vcc fault: '+DoubleBooleanToStr(DB1_DBB26_bit2.Value));
+  Log('[DB1.DBB26_bit3] Thermal switch: '+DoubleBooleanToStr(DB1_DBB26_bit3.Value));
+  Log('[DB1.DBB34_bit0] Overload Idc: '+DoubleBooleanToStr(DB1_DBB34_bit0.Value));
+  Log('[DB1.DBB38_bit0] H.V.discharge: '+DoubleBooleanToStr(DB1_DBB38_bit0.Value));
+  Log('[DB1.DBB38_bit1] Interlock Cor: '+DoubleBooleanToStr(DB1_DBB38_bit1.Value));
+  Log('[DB1.DBB22_bit3] Low speed: '+DoubleBooleanToStr(DB1_DBB22_bit3.Value));
+  Log('[DB1.DBB22_bit1] Station open: '+DoubleBooleanToStr(DB1_DBB22_bit1.Value));
+  Log('[DB1.DBB22_bit6] Power alarm: '+DoubleBooleanToStr(DB1_DBB22_bit6.Value));
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -1159,17 +1213,17 @@ end;
 
 procedure TForm1.Memo01IpconfigAllClick(Sender: TObject);
 begin
-  Button8Click(Sender);
+  ButtonIpconfigAlClick(Sender);
 end;
 
 procedure TForm1.Memo01IpconfigClick(Sender: TObject);
 begin
-  Button7Click(Sender);
+  ButtonIpconfigClick(Sender);
 end;
 
 procedure TForm1.Memo01PingClick(Sender: TObject);
 begin
-  Button6Click(Sender);
+  ButtonPingClick(Sender);
 end;
 
 procedure TForm1.Memo01SelectAllClick(Sender: TObject);
@@ -1194,6 +1248,21 @@ begin
     (Sender as TMemo).SelectAll;
     Key := #0;
   end;
+end;
+
+procedure TForm1.MenuComputerNameClick(Sender: TObject);
+begin
+  ButtonComputerNameClick(Sender);
+end;
+
+procedure TForm1.MenuCurrentActualToFileClick(Sender: TObject);
+begin
+  ButtonCurrentActToFileClick(Sender);
+end;
+
+procedure TForm1.MenuIPAddressClick(Sender: TObject);
+begin
+  ButtonGetIPAddressClick(Sender);
 end;
 
 procedure TForm1.MenuItem3Click(Sender: TObject);
@@ -1228,6 +1297,11 @@ begin
         Chart1.LogicalExtent:=AZ;
         Chatr_Zoom:=Chatr_Zoom+2;
       end;
+end;
+
+procedure TForm1.MenuItemCurrentActualClick(Sender: TObject);
+begin
+  ButtonCurrentActualClick(Sender);
 end;
 
 procedure TForm1.Power_Out_CheckBoxEditingDone(Sender: TObject);
