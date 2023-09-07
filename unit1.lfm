@@ -3,7 +3,7 @@ object Form1: TForm1
   Height = 572
   Top = 38
   Width = 885
-  Caption = 'PLC:10.10.10.40  Port:102  07/09/2023 15:09'
+  Caption = 'PLC:10.10.10.40  Port:102  07/09/2023 17:32'
   ClientHeight = 572
   ClientWidth = 885
   OnClose = FormClose
@@ -2457,13 +2457,13 @@ object Form1: TForm1
         ScrollBars = ssAutoBoth
         TabOrder = 0
       end
-      object Button3: TButton
+      object ButtonSimulate: TButton
         Left = 8
         Height = 28
         Top = 16
         Width = 95
         Caption = 'Simulate'
-        OnClick = Button3Click
+        OnClick = ButtonSimulateClick
         TabOrder = 1
       end
       object CmdBox1: TCmdBox
@@ -2528,13 +2528,13 @@ object Form1: TForm1
         TabOrder = 6
         Visible = False
       end
-      object Button6: TButton
+      object ButtonPing: TButton
         Left = 8
         Height = 28
         Top = 56
         Width = 95
         Caption = 'Ping'
-        OnClick = Button6Click
+        OnClick = ButtonPingClick
         TabOrder = 7
       end
       object Edit1: TEdit
@@ -2550,50 +2550,59 @@ object Form1: TForm1
         TabOrder = 8
         Text = '10.10.10.40'
       end
-      object Button7: TButton
+      object ButtonIpconfig: TButton
         Left = 8
         Height = 28
         Top = 88
         Width = 95
         Caption = 'ipconfig'
-        OnClick = Button7Click
+        OnClick = ButtonIpconfigClick
         TabOrder = 9
       end
-      object Button8: TButton
+      object ButtonIpconfigAl: TButton
         Left = 8
         Height = 28
         Top = 121
         Width = 95
         Caption = 'ipconfig /all'
-        OnClick = Button8Click
+        OnClick = ButtonIpconfigAlClick
         TabOrder = 10
       end
-      object Button9: TButton
+      object ButtonGetIPAddress: TButton
         Left = 112
         Height = 28
         Top = 121
         Width = 95
         Caption = 'Get IP address'
-        OnClick = Button9Click
+        OnClick = ButtonGetIPAddressClick
         TabOrder = 11
       end
-      object Button10: TButton
+      object ButtonComputerName: TButton
         Left = 112
         Height = 28
         Top = 88
         Width = 95
         Caption = 'Computer Name'
-        OnClick = Button10Click
+        OnClick = ButtonComputerNameClick
         TabOrder = 12
       end
-      object Button11: TButton
+      object ButtonCurrentActToFile: TButton
         Left = 216
         Height = 28
         Top = 121
         Width = 107
         Caption = 'CurrentActToFile'
-        OnClick = Button11Click
+        OnClick = ButtonCurrentActToFileClick
         TabOrder = 13
+      end
+      object ButtonCurrentActual: TButton
+        Left = 216
+        Height = 28
+        Top = 88
+        Width = 107
+        Caption = 'Current actual'
+        OnClick = ButtonCurrentActualClick
+        TabOrder = 14
       end
     end
   end
@@ -2942,6 +2951,22 @@ object Form1: TForm1
       object Memo01IpconfigAll: TMenuItem
         Caption = 'ipconfig /all'
         OnClick = Memo01IpconfigAllClick
+      end
+      object MenuComputerName: TMenuItem
+        Caption = 'Computer name'
+        OnClick = MenuComputerNameClick
+      end
+      object MenuIPAddress: TMenuItem
+        Caption = 'IP address'
+        OnClick = MenuIPAddressClick
+      end
+      object MenuItemCurrentActual: TMenuItem
+        Caption = 'Current actual'
+        OnClick = MenuItemCurrentActualClick
+      end
+      object MenuCurrentActualToFile: TMenuItem
+        Caption = 'Current actual to file'
+        OnClick = MenuCurrentActualToFileClick
       end
     end
   end
