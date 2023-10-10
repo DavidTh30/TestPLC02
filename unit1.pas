@@ -24,6 +24,7 @@ type
     ButtonCurrentActual: TButton;
     Button4: TButton;
     Button5: TButton;
+    AutoPingBatchFile: TButton;
     ButtonPing: TButton;
     ButtonIpconfig: TButton;
     ButtonIpconfigAl: TButton;
@@ -171,6 +172,7 @@ type
     MenuComputerName: TMenuItem;
     MenuCurrentActualToFile: TMenuItem;
     MenuIPAddress: TMenuItem;
+    Auto_Ping_Batch_File: TMenuItem;
     MenuItemCurrentActual: TMenuItem;
     ProgressBar_PwrOut: TProgressBar;
     ProgressBar_PL: TProgressBar;
@@ -253,6 +255,8 @@ type
     Timer2: TTimer;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
+    procedure AutoPingBatchFileClick(Sender: TObject);
+    procedure Auto_Ping_Batch_FileClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
@@ -1017,6 +1021,30 @@ begin
   finally
     FreeMem(Table);
   end;
+end;
+
+procedure TForm1.AutoPingBatchFileClick(Sender: TObject);
+begin
+  //sc query  Winmgmt | find "RUNNING" >nul 2>&1 && (echo service is started) || (echo service is stopped)
+  Log('----- AutoPing.bat -----');
+  Log('@echo off');
+  Log(':LOOPSTART');
+  Log('set IPADDRESS=10.10.10.40');
+  Log('set File=Ping_%date:~4,2%_%date:~7,2%_%date:~10,4%.log');
+  Log('echo ------------------------ >> %File%');
+  Log('echo %date% %time% >> %File%');
+  Log('rem ping %IPADDRESS% -n 1 -I 10 | find "Reply from" >> %File%');
+  Log('ping %IPADDRESS% -n 1 -l 10 | find "Reply from" > nul 2>&1 >> %File% || (echo Request timed out) >> %File%');
+  Log('rem ping 127.0.0.1 -n 1 > NUL');
+  Log('rem sleep 1000');
+  Log('rem timeout /t 1 /nobreak');
+  Log('timeout 1 > NUL');
+  Log('GOTO LOOPSTART');
+end;
+
+procedure TForm1.Auto_Ping_Batch_FileClick(Sender: TObject);
+begin
+  AutoPingBatchFileClick(Sender);
 end;
 
 procedure TForm1.Button6Click(Sender: TObject);
