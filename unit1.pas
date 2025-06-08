@@ -19,6 +19,7 @@ type
     Button3: TButton;
     Button6: TButton;
     Button7: TButton;
+    CloseDisconnectPanel: TButton;
     ButtonComputerName: TButton;
     ButtonCurrentActToFile: TButton;
     ButtonCurrentActual: TButton;
@@ -116,6 +117,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     Label_OperateValue: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -174,6 +176,7 @@ type
     MenuIPAddress: TMenuItem;
     Auto_Ping_Batch_File: TMenuItem;
     MenuItemCurrentActual: TMenuItem;
+    Disconnect_Panel: TPanel;
     ProgressBar_PwrOut: TProgressBar;
     ProgressBar_PL: TProgressBar;
     ProgressBar_ACT: TProgressBar;
@@ -279,6 +282,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure Chart1MouseEnter(Sender: TObject);
     procedure Chart1MouseLeave(Sender: TObject);
+    procedure CloseDisconnectPanelClick(Sender: TObject);
     procedure ConnectClick(Sender: TObject);
     procedure DisconnectClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1250,6 +1254,14 @@ begin
   Chart_Enter:=false;
 end;
 
+procedure TForm1.CloseDisconnectPanelClick(Sender: TObject);
+begin
+  Disconnect_Panel.Top:=0;
+  Disconnect_Panel.Left:=0;
+  Disconnect_Panel.Width:=0;
+  Disconnect_Panel.Height:=0;
+end;
+
 procedure TForm1.ConnectClick(Sender: TObject);
 var
   i:integer;
@@ -1277,6 +1289,11 @@ begin
       application.ProcessMessages;
     end;
     TCP_UDPPort1.ExclusiveDevice:=false;
+    Disconnect_Panel.Top:=64;
+    Disconnect_Panel.Left:=48;
+    Disconnect_Panel.Width:=776;
+    Disconnect_Panel.Height:=450;
+    Disconnect_Panel.Visible:=true;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1594,11 +1611,11 @@ begin
    end;
 
    try         //FloatToStr(Int(Random(1*10)))
-     if not TCP_UDPPort1.Active then
+     if (not TCP_UDPPort1.Active) or (Error_CPU_Clock_counter >= 10) then
      begin
        writeln(fileout, FormatDateTime('DD/MM/YYYY',Now)+','+FormatDateTime('hh:nn:ss',Now)+',-,-,-,-,-,-,-');
      end;
-     if TCP_UDPPort1.Active then
+     if TCP_UDPPort1.Active and (not (Error_CPU_Clock_counter >= 10)) then
      begin
        //FormatFloat('####0.00',DB3_DBD12.Value)//FloatToStr(Q1_7.Value)
        //Date,                             Time,                           I_DC,                                    V_DC,                                    V_Out,                                   LineSpeed,                                Power_Out,                                PowerSetSpecPower,                       SpecificPower
@@ -1831,13 +1848,33 @@ begin
     Error_CPU_Clock_counter:=0;
     Old_CPU_Clock_counter:=CPU_Clock_counter;
   end;
-  if (Old_CPU_Clock_counter=CPU_Clock_counter) and TCP_UDPPort1.Active then Error_CPU_Clock_counter:=Error_CPU_Clock_counter+1;
-  if Error_CPU_Clock_counter >= 100 then
-  begin
-    Error_CPU_Clock_counter:=0;
-    DisconnectClick(Sender);
-  end;
 
+  //if (Old_CPU_Clock_counter=CPU_Clock_counter) and TCP_UDPPort1.Active then Error_CPU_Clock_counter:=Error_CPU_Clock_counter+1;
+  if (Old_CPU_Clock_counter=CPU_Clock_counter) then Error_CPU_Clock_counter:=Error_CPU_Clock_counter+1;
+  if Error_CPU_Clock_counter = 50-1 then
+  begin
+    Disconnect_Panel.Top:=64;
+    Disconnect_Panel.Left:=48;
+    Disconnect_Panel.Width:=776;
+    Disconnect_Panel.Height:=450;
+  end;
+   if Error_CPU_Clock_counter = 50 then
+  begin
+    ConnectMenu.Items[1].Enabled:=false;
+    ConnectMenu.Items[0].Enabled:=true;
+  end;
+  if Error_CPU_Clock_counter >= 50 then
+  begin
+    Error_CPU_Clock_counter:=50;
+    //DisconnectClick(Sender);
+    Disconnect_Panel.Visible:=true;
+  end
+  else
+  begin
+    Disconnect_Panel.Visible:=false;
+    ConnectMenu.Items[0].Enabled:=false;
+    ConnectMenu.Items[1].Enabled:=true;
+  end;
 end;
 
 procedure TForm1.V_DC_CheckBoxEditingDone(Sender: TObject);
