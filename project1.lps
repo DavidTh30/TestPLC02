@@ -20,8 +20,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="1596"/>
-        <CursorPos X="33" Y="1618"/>
+        <TopLine Value="1691"/>
+        <CursorPos X="3" Y="1557"/>
         <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -39,39 +39,21 @@
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-process\src\process.pp"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="83" Y="32"/>
         <UsageCount Value="28"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-extra\src\win\winsock.pp"/>
         <UnitName Value="WinSock"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="751"/>
         <CursorPos X="14" Y="765"/>
         <UsageCount Value="15"/>
-        <Loaded Value="True"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="1307" Column="26" TopLine="1287"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="1833" Column="28" TopLine="1813"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="1837" Column="127" TopLine="1817"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="1838" Column="101" TopLine="1818"/>
-      </Position>
       <Position>
         <Filename Value="unit1.pas"/>
         <Caret Line="1839" Column="6" TopLine="1821"/>
@@ -175,6 +157,22 @@
       <Position>
         <Filename Value="unit1.pas"/>
         <Caret Line="1873" Column="8" TopLine="1854"/>
+      </Position>
+      <Position>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="1618" Column="33" TopLine="1599"/>
+      </Position>
+      <Position>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="1786" Column="3" TopLine="1849"/>
+      </Position>
+      <Position>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="1631" Column="120" TopLine="1620"/>
+      </Position>
+      <Position>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="522" Column="52" TopLine="517"/>
       </Position>
     </JumpHistory>
     <RunParams>

@@ -1633,21 +1633,25 @@ begin
   MaxRecordTime:=60*60*12;
   if ListChartSource1.Count >= MaxRecordTime then
   begin
-    for i:=0 to MaxRecordTime-2 do
-    begin
-      ListChartSource1.Item[i]^.Y:=ListChartSource1.Item[i+1]^.Y;
-      ListChartSource1.Item[i]^.Text:=ListChartSource1.Item[i+1]^.Text;
+    //for i:=0 to MaxRecordTime-2 do
+    //begin
+    //  ListChartSource1.Item[i]^.Y:=ListChartSource1.Item[i+1]^.Y;
+    //  ListChartSource1.Item[i]^.Text:=ListChartSource1.Item[i+1]^.Text;
+    //
+    //  ListChartSource4.Item[i]^.Y:=ListChartSource4.Item[i+1]^.Y;
+    //  ListChartSource4.Item[i]^.Text:=ListChartSource4.Item[i+1]^.Text;
+    //
+    //  ListChartSource5.Item[i]^.Y:=ListChartSource5.Item[i+1]^.Y;
+    //  ListChartSource5.Item[i]^.Text:=ListChartSource5.Item[i+1]^.Text;
+    //
+    //end;
+    //ListChartSource1.Delete(MaxRecordTime-1);
+    //ListChartSource4.Delete(MaxRecordTime-1);
+    //ListChartSource5.Delete(MaxRecordTime-1);
 
-      ListChartSource4.Item[i]^.Y:=ListChartSource4.Item[i+1]^.Y;
-      ListChartSource4.Item[i]^.Text:=ListChartSource4.Item[i+1]^.Text;
-
-      ListChartSource5.Item[i]^.Y:=ListChartSource5.Item[i+1]^.Y;
-      ListChartSource5.Item[i]^.Text:=ListChartSource5.Item[i+1]^.Text;
-
-    end;
-    ListChartSource1.Delete(MaxRecordTime-1);
-    ListChartSource4.Delete(MaxRecordTime-1);
-    ListChartSource5.Delete(MaxRecordTime-1);
+    ListChartSource1.Delete(0);
+    ListChartSource4.Delete(0);
+    ListChartSource5.Delete(0);
   end;
 
 
